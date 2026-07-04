@@ -715,11 +715,11 @@
             <i class="fa-solid fa-arrow-right-to-bracket"></i> Ingia
         </button>
         <div style="margin-top:12px;font-size:11px;color:var(--text-faint);">
-            <p>👑 Admin: <strong>1616</strong> / <strong>1616</strong></p>
+            <p>👑 Mkurugenzi Office: <strong>***</strong> / <strong>***</strong></p>
             <p>☁️ Offline & Online (Supabase)</p>
-            <p>🤖 Mistral AI Live imewashwa</p>
-            <p>🎰 Jackpot System imewashwa</p>
-            <p>🔊 Voice Reminders zimewashwa</p>
+            <p>🤖ASSINTANCE AI</p>
+            <p>🎰 BONUS YA MFAKAZI BORA</p>
+            <p>🔊 KUMBUSHO NA MFUMO WA SAUTI</p>
         </div>
     </div>
 </div>
@@ -4328,27 +4328,56 @@ async function handleCheckOut() {
 }
 
 // ====================================================================
-// USER OPERATIONS (Admin)
+// CONFIRM ADD USER - ILIYOREKEBISHWA KABISA
 // ====================================================================
 async function confirmAddUser() {
     if (!currentUser || currentUser.id !== ADMIN_ID) {
         showToast('Sehemu hii ni ya Admin pekee!', 'warn');
         return;
     }
+
     const name = document.getElementById('newUserName').value.trim();
     const id = document.getElementById('newUserId').value.trim();
     const phone = document.getElementById('newUserPhone').value.trim();
     const pass = document.getElementById('newUserPass').value.trim() || '123';
     const salary = parseInt(document.getElementById('newUserSalary').value) || 0;
     const image = document.getElementById('newUserImage').value.trim();
-    if (!name || !id) { showToast('Jaza taarifa zote', 'warn'); return; }
-    if (db.users && db.users.find(u => u.id === id)) { showToast('Namba hii tayari ipo!', 'warn'); return; }
-    const user = { id, name, password: pass, role: 'staff', phone: phone || '', salary, image: image || '' };
-    await supabase.addUser(user);
+
+    if (!name || !id) {
+        showToast('Tafadhali jaza taarifa zote', 'warn');
+        return;
+    }
+
+    if (db.users && db.users.find(u => u.id === id)) {
+        showToast('Namba hii tayari ipo!', 'warn');
+        return;
+    }
+
+    // 1. UNDA MFANYAKAZI MPYA
+    const newUser = { 
+        id: id, 
+        name: name, 
+        password: pass, 
+        role: 'staff', 
+        phone: phone || '', 
+        salary: salary, 
+        image: image || '' 
+    };
+    
+    // 2. ONGEZA KWENYE LOCAL DB
     if (!db.users) db.users = [];
-    db.users.push(user);
+    db.users.push(newUser);
     saveData();
-    await syncData();
+
+    // 3. TUMIA SUPABASE
+    try {
+        await supabase.addUser(newUser);
+        showToast('✅ Mfanyakazi amesajiliwa kwenye Cloud!', 'ok');
+    } catch (e) {
+        showToast('⚠️ Imehifadhiwa local, lakini cloud imeshindwa', 'warn');
+    }
+
+    // 4. FUNGA MODAL NA FOMU
     closeModal('newUserModal');
     document.getElementById('newUserName').value = '';
     document.getElementById('newUserId').value = '';
@@ -4356,7 +4385,10 @@ async function confirmAddUser() {
     document.getElementById('newUserPass').value = '123';
     document.getElementById('newUserSalary').value = '';
     document.getElementById('newUserImage').value = '';
+
+    // 5. RENDER UPYA - WAFANYAKAZI WATAONEKANA
     renderAll();
+    
     showToast('✅ Mfanyakazi ' + name + ' amesajiliwa!', 'ok');
     showToast('🔑 Namba: "' + id + '" · Nenosiri: "' + pass + '"', 'ok');
     speakText('Mfanyakazi ' + name + ' amesajiliwa');
