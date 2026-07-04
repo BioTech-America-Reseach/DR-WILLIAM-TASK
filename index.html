@@ -1888,6 +1888,214 @@ async function handleLogin() {
         return;
     }
 
+    // ANGAZIA LOCAL DB KWANZA
+    let user = null;
+    
+    if (db.users && db.users.length > 0) {
+        user = db.users.find(u => u.id === id && u.password === pass);
+    }
+    
+    // IKIWA AMEPATIKANA LOCAL - TUMIA MARA MOJA
+    if (user) {
+        currentUser = user;
+        db.currentUser = currentUser;
+        saveData();
+        
+        document.getElementById('loginError').style.display = 'none';
+        document.getElementById('loginPage').style.display = 'none';
+        document.getElementById('mainApp').style.display = 'block';
+        
+        setupAppAfterLogin();
+        return;
+    }
+
+    // IKIWA HAPO LOCAL, ANGAZIA SUPABASE
+    try {
+        const cloudUsers = await supabase.getUsers();
+        
+        if (cloudUsers && !cloudUsers.error) {
+            const localUsers = db.users || [];
+            const cloudUsersList = cloudUsers || [];
+            
+            const mergedUsers = [...localUsers];
+            cloudUsersList.forEach(cloudUser => {
+                if (!mergedUsers.find(u => u.id === cloudUser.id)) {
+                    mergedUsers.push(cloudUser);
+                }
+            });
+            
+            if (!mergedUsers.find(u => u.id === ADMIN_ID)) {
+                mergedUsers.push({ id: ADMIN_ID, name: 'Admin', password: ADMIN_PASS, role: 'admin', phone: '0712345678', salary: 0, image: '' });
+            }
+            
+            db.users = mergedUsers;
+            saveData();
+            
+            user = db.users.find(u => u.id === id && u.password === pass);
+            
+            if (user) {
+                currentUser = user;
+                db.currentUser = currentUser;
+                saveData();
+                
+                document.getElementById('loginError').style.display = 'none';
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                
+                setupAppAfterLogin();
+                return;
+            }
+        }
+    } catch (e) {
+        console.log('Cloud error, using local data only');
+    }
+
+    // IKIWA HAKUNA MTUMIAJI
+    document.getElementById('loginError').textContent = 'Namba au nenosiri si sahihi!';
+    document.getElementById('loginError').style.display = 'block';
+}
+
+// ====================================================================
+// SYNC DATA - ILIYOREKEBISHWA KABISA
+// ====================================================================
+async function syncData() {
+    const dot = document.getElementById('syncDot');
+    const text = document.getElementById('syncText');
+    dot.className = 'sync-dot syncing';
+    text.textContent = 'Inasawazisha...';
+    
+    try {
+        const [users, tasks, attendance, rules, drugs, sales, patients, bonuses, stock, winner, events, expenses, receipts, notifications, savings, salaryRequests, scrollingText] = await Promise.all([
+            supabase.getUsers(), supabase.getTasks(), supabase.getAttendance(), supabase.getRules(),
+            supabase.getDrugs(), supabase.getSales(), supabase.getPatients(), supabase.getBonuses(),
+            supabase.getStock(), supabase.getWinner(), supabase.getEvents(), supabase.getExpenses(),
+            supabase.getReceipts(), supabase.getNotifications(), supabase.getSavings(),
+            supabase.getSalaryRequests(), supabase.getScrollingText()
+        ]);
+
+        // UNGANISHA WAFANYAKAZI - USIFUTE LOCAL DATA
+        if (users && !users.error) {
+            const localUsers = db.users || [];
+            const cloudUsers = users || [];
+            const mergedUsers = [...localUsers];
+            
+            cloudUsers.forEach(cloudUser => {
+                if (!mergedUsers.find(u => u.id === cloudUser.id)) {
+                    mergedUsers.push(cloudUser);
+                }
+            });
+            
+            // HAKIKISHA ADMIN YUPO
+            if (!mergedUsers.find(u => u.id === ADMIN_ID)) {
+                mergedUsers.push({ id: ADMIN_ID, name: 'Admin', password: ADMIN_PASS, role: 'admin', phone: '0712345678', salary: 0, image: '' });
+            }
+            
+            db.users = mergedUsers;
+        }
+        
+        // SAWA NA DATA NYINGINE
+        if (tasks && !tasks.error) db.tasks = tasks;
+        if (attendance && !attendance.error) db.attendance = attendance;
+        if (rules && !rules.error) db.rules = rules;
+        if (drugs && !drugs.error) db.drugs = drugs;
+        if (sales && !sales.error) db.sales = sales;
+        if (patients && !patients.error) db.patients = patients;
+        if (bonuses && !bonuses.error) db.bonuses = bonuses;
+        if (stock && !stock.error) db.stock = stock;
+        if (winner && !winner.error && winner.length > 0) db.winner = winner[0];
+        if (events && !events.error) db.events = events;
+        if (expenses && !expenses.error) db.expenses = expenses;
+        if (receipts && !receipts.error) db.receipts = receipts;
+        if (notifications && !notifications.error) db.notifications = notifications;
+        if (savings && !savings.error) db.savings = savings;
+        if (salaryRequests && !salaryRequests.error) db.salary_requests = salaryRequests;
+        if (scrollingText && !scrollingText.error && scrollingText.length > 0) {
+            db.scrolling_text = scrollingText[0];
+        }
+
+        // UPDATE CURRENT USER
+        if (currentUser) {
+            const user = db.users.find(u => u.id === currentUser.id);
+            if (user) currentUser = user;
+        }
+
+        saveData();
+        dot.className = 'sync-dot online';
+        text.textContent = 'Cloud';
+        showToast('✅ Data imesawazishwa!', 'ok');
+        renderAll();
+        generateAIReport();
+        generateAIDailyReport();
+        startVoiceReminders();
+        updateNotifications();
+        updateScrollingTextDisplay();
+    } catch (e) {
+        dot.className = 'sync-dot offline';
+        text.textContent = 'Offline';
+        showToast('⚠️ Offline mode - data zimehifadhiwa ndani', 'warn');
+        renderAll();
+        startVoiceReminders();
+        updateScrollingTextDisplay();
+    }
+}
+
+// ====================================================================
+// SETUP APP AFTER LOGIN
+// ====================================================================
+function setupAppAfterLogin() {
+    const adminTab = document.getElementById('adminTab');
+    const aiTab = document.getElementById('aiTab');
+    const isAdmin = currentUser && currentUser.id === ADMIN_ID;
+    
+    if (isAdmin) {
+        adminTab.style.display = 'inline-flex';
+        aiTab.style.display = 'inline-flex';
+        document.getElementById('addRuleBtn').style.display = 'inline-block';
+        document.getElementById('addDrugBtn').style.display = 'inline-block';
+        document.getElementById('adminStockForm').style.display = 'block';
+        document.getElementById('allTasksContainer').style.display = 'block';
+        document.getElementById('addExpenseBtn').style.display = 'inline-block';
+        document.getElementById('addTaskBtn').style.display = 'inline-block';
+    } else {
+        adminTab.style.display = 'none';
+        aiTab.style.display = 'none';
+        document.getElementById('addRuleBtn').style.display = 'none';
+        document.getElementById('addDrugBtn').style.display = 'none';
+        document.getElementById('adminStockForm').style.display = 'none';
+        document.getElementById('allTasksContainer').style.display = 'none';
+        document.getElementById('addExpenseBtn').style.display = 'none';
+        document.getElementById('addTaskBtn').style.display = 'none';
+    }
+
+    document.getElementById('userNameDisplay').textContent = currentUser.name;
+    document.getElementById('userIdDisplay').textContent = '(***)';
+    document.getElementById('userRoleDisplay').textContent = isAdmin ? 'Msimamizi' : 'Mfanyakazi';
+
+    renderAll();
+    showToast('Karibu ' + currentUser.name + '!', 'ok');
+    speakText('Karibu ' + currentUser.name);
+    generateAIReport();
+    generateAIDailyReport();
+    updateBonus3D();
+    initJackpot();
+    startVoiceReminders();
+    updateNotifications();
+    updateScrollingTextDisplay();
+    setTimeout(initSignaturePad, 500);
+}
+// ====================================================================
+// HANDLE LOGIN - ILIYOREKEBISHWA KABISA
+// ====================================================================
+async function handleLogin() {
+    const id = document.getElementById('loginId').value.trim();
+    const pass = document.getElementById('loginPass').value.trim();
+
+    if (!id || !pass) {
+        document.getElementById('loginError').textContent = 'Tafadhali jaza namba na nenosiri!';
+        document.getElementById('loginError').style.display = 'block';
+        return;
+    }
+
     // 1. ANGAZIA LOCAL DB KWANZA
     let user = db.users.find(u => u.id === id && u.password === pass);
 
@@ -5082,27 +5290,6 @@ function init() {
     console.log('✅ Wafanyakazi wanaweza kuingia!');
     console.log('✅ Data zote zimeunganishwa!');
     console.log('🤖 Mistral AI Live imewashwa!');
-}
-
-document.addEventListener('DOMContentLoaded', init);
-if (document.readyState !== 'loading') init();
-</script>
-</body>
-</html>
-    document.querySelectorAll('.modal-overlay').forEach(m => {
-        m.addEventListener('click', function(e) { if (e.target === this) { this.classList.remove('open'); this.style.display = 'none'; } });
-    });
-
-    if ('speechSynthesis' in window) window.speechSynthesis.getVoices();
-
-    setTimeout(syncData, 2000);
-    initJackpot();
-    initSignaturePad();
-
-    console.log('✅ DR WILLIAM CLINIC PRO 13');
-    console.log('👑 MKURUGENZI: ***/ ***');
-    console.log('🤖 AI INAKAGUA');
-    console.log('✅ DONE!');
 }
 
 document.addEventListener('DOMContentLoaded', init);
