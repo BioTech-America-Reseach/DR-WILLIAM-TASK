@@ -715,11 +715,11 @@
             <i class="fa-solid fa-arrow-right-to-bracket"></i> Ingia
         </button>
         <div style="margin-top:12px;font-size:11px;color:var(--text-faint);">
-            <p>👑 Mkurugenzi Office: <strong>***</strong> / <strong>***</strong></p>
+            <p>👑 Admin: <strong>1616</strong> / <strong>1616</strong></p>
             <p>☁️ Offline & Online (Supabase)</p>
-            <p>🤖ASSINTANCE AI</p>
-            <p>🎰 BONUS YA MFAKAZI BORA</p>
-            <p>🔊 KUMBUSHO NA MFUMO WA SAUTI</p>
+            <p>🤖 Mistral AI Live imewashwa</p>
+            <p>🎰 Jackpot System imewashwa</p>
+            <p>🔊 Voice Reminders zimewashwa</p>
         </div>
     </div>
 </div>
@@ -4348,6 +4348,7 @@ async function confirmAddUser() {
         return;
     }
 
+    // HAKIKISHA NAMBA HAIPO
     if (db.users && db.users.find(u => u.id === id)) {
         showToast('Namba hii tayari ipo!', 'warn');
         return;
@@ -4364,17 +4365,17 @@ async function confirmAddUser() {
         image: image || '' 
     };
     
-    // 2. ONGEZA KWENYE LOCAL DB
+    // 2. ONGEZA KWENYE LOCAL DB - HII NDIO PRIORITY
     if (!db.users) db.users = [];
     db.users.push(newUser);
     saveData();
 
-    // 3. TUMIA SUPABASE
+    // 3. TUMIA SUPABASE (ISIPOKUWA NA INTERNET, DATA INABARI LOCAL)
     try {
         await supabase.addUser(newUser);
         showToast('✅ Mfanyakazi amesajiliwa kwenye Cloud!', 'ok');
     } catch (e) {
-        showToast('⚠️ Imehifadhiwa local, lakini cloud imeshindwa', 'warn');
+        showToast('⚠️ Imehifadhiwa local, cloud imeshindwa', 'warn');
     }
 
     // 4. FUNGA MODAL NA FOMU
@@ -4389,68 +4390,98 @@ async function confirmAddUser() {
     // 5. RENDER UPYA - WAFANYAKAZI WATAONEKANA
     renderAll();
     
+    // 6. TOAST UJUMBE
     showToast('✅ Mfanyakazi ' + name + ' amesajiliwa!', 'ok');
     showToast('🔑 Namba: "' + id + '" · Nenosiri: "' + pass + '"', 'ok');
     speakText('Mfanyakazi ' + name + ' amesajiliwa');
 }
 
-async function deleteUser(userId) {
-    if (!currentUser || currentUser.id !== ADMIN_ID) {
-        showToast('Sehemu hii ni ya Admin pekee!', 'warn');
-        return;
-    }
-    if (userId === ADMIN_ID) { showToast('Huwezi kumfuta Admin!', 'warn'); return; }
-    if (!confirm('Futa mfanyakazi huyu?')) return;
-    await supabase.deleteUser(userId);
-    db.users = db.users.filter(u => u.id !== userId);
-    saveData();
-    await syncData();
-    renderAll();
-    showToast('✅ Mfanyakazi amefutwa!', 'ok');
-}
+// ====================================================================
+// SYNC DATA - ILIYOREKEBISHWA (USIFUTE DATA MPYA)
+// ====================================================================
+async function syncData() {
+    const dot = document.getElementById('syncDot');
+    const text = document.getElementById('syncText');
+    dot.className = 'sync-dot syncing';
+    text.textContent = 'Inasawazisha...';
+    
+    try {
+        // CHUKUA DATA KUTOKA CLOUD
+        const [users, tasks, attendance, rules, drugs, sales, patients, bonuses, stock, winner, events, expenses, receipts, notifications, savings, salaryRequests, scrollingText] = await Promise.all([
+            supabase.getUsers(), supabase.getTasks(), supabase.getAttendance(), supabase.getRules(),
+            supabase.getDrugs(), supabase.getSales(), supabase.getPatients(), supabase.getBonuses(),
+            supabase.getStock(), supabase.getWinner(), supabase.getEvents(), supabase.getExpenses(),
+            supabase.getReceipts(), supabase.getNotifications(), supabase.getSavings(),
+            supabase.getSalaryRequests(), supabase.getScrollingText()
+        ]);
 
-function openEditUser(userId) {
-    const user = db.users.find(u => u.id === userId);
-    if (!user) return;
-    document.getElementById('editUserId').value = userId;
-    document.getElementById('editUserName').value = user.name || '';
-    document.getElementById('editUserPhone').value = user.phone || '';
-    document.getElementById('editUserPass').value = '';
-    document.getElementById('editUserSalary').value = user.salary || '';
-    openModal('editUserModal');
-}
+        // HAKIKISHA ADMIN YUPO
+        if (users && !users.error) {
+            // USIFUTE DATA ZILIZOPO LOCAL - ZIUNGANISHE NA CLOUD
+            const localUsers = db.users || [];
+            const cloudUsers = users || [];
+            
+            // UNGANISHA DATA - USIFUTE MPYA
+            const mergedUsers = [...localUsers];
+            cloudUsers.forEach(cloudUser => {
+                if (!mergedUsers.find(u => u.id === cloudUser.id)) {
+                    mergedUsers.push(cloudUser);
+                }
+            });
+            db.users = mergedUsers;
+        }
+        
+        // SAWA NA DATA NYINGINE
+        if (tasks && !tasks.error) db.tasks = tasks;
+        if (attendance && !attendance.error) db.attendance = attendance;
+        if (rules && !rules.error) db.rules = rules;
+        if (drugs && !drugs.error) db.drugs = drugs;
+        if (sales && !sales.error) db.sales = sales;
+        if (patients && !patients.error) db.patients = patients;
+        if (bonuses && !bonuses.error) db.bonuses = bonuses;
+        if (stock && !stock.error) db.stock = stock;
+        if (winner && !winner.error && winner.length > 0) db.winner = winner[0];
+        if (events && !events.error) db.events = events;
+        if (expenses && !expenses.error) db.expenses = expenses;
+        if (receipts && !receipts.error) db.receipts = receipts;
+        if (notifications && !notifications.error) db.notifications = notifications;
+        if (savings && !savings.error) db.savings = savings;
+        if (salaryRequests && !salaryRequests.error) db.salary_requests = salaryRequests;
+        if (scrollingText && !scrollingText.error && scrollingText.length > 0) {
+            db.scrolling_text = scrollingText[0];
+        }
 
-async function confirmEditUser() {
-    const userId = document.getElementById('editUserId').value;
-    const name = document.getElementById('editUserName').value.trim();
-    const phone = document.getElementById('editUserPhone').value.trim();
-    const pass = document.getElementById('editUserPass').value.trim();
-    const salary = parseInt(document.getElementById('editUserSalary').value) || 0;
-    if (!name) { showToast('Andika jina', 'warn'); return; }
-    const user = db.users.find(u => u.id === userId);
-    if (!user) { showToast('Mfanyakazi hapatikani!', 'warn'); return; }
-    user.name = name;
-    user.salary = salary;
-    if (phone) user.phone = phone;
-    if (pass) user.password = pass;
-    saveData();
-    const updateData = { name, salary };
-    if (phone) updateData.phone = phone;
-    if (pass) updateData.password = pass;
-    try { await supabase.updateUser(userId, updateData); } catch (e) { showToast('Cloud imeshindwa', 'warn'); }
-    await syncData();
-    closeModal('editUserModal');
-    renderAll();
-    if (currentUser && currentUser.id === userId) {
-        currentUser = user;
-        document.getElementById('userNameDisplay').textContent = currentUser.name;
-        document.getElementById('userRoleDisplay').textContent = currentUser.role === 'admin' ? 'Msimamizi' : 'Mfanyakazi';
+        // HAKIKISHA ADMIN YUPO
+        if (!db.users.find(u => u.id === ADMIN_ID)) {
+            db.users.push({ id: ADMIN_ID, name: 'Admin', password: ADMIN_PASS, role: 'admin', phone: '0712345678', salary: 0, image: '' });
+            await supabase.addUser({ id: ADMIN_ID, name: 'Admin', password: ADMIN_PASS, role: 'admin', phone: '0712345678', salary: 0, image: '' });
+        }
+
+        // UPDATE CURRENT USER
+        if (currentUser) {
+            const user = db.users.find(u => u.id === currentUser.id);
+            if (user) currentUser = user;
+        }
+
         saveData();
+        dot.className = 'sync-dot online';
+        text.textContent = 'Cloud';
+        showToast('✅ Data imesawazishwa!', 'ok');
+        renderAll();
+        generateAIReport();
+        generateAIDailyReport();
+        startVoiceReminders();
+        updateNotifications();
+        updateScrollingTextDisplay();
+    } catch (e) {
+        dot.className = 'sync-dot offline';
+        text.textContent = 'Offline';
+        showToast('⚠️ Offline mode - data zimehifadhiwa ndani', 'warn');
+        renderAll();
+        startVoiceReminders();
+        updateScrollingTextDisplay();
     }
-    showToast('✅ Taarifa za ' + name + ' zimebadilishwa!', 'ok');
-    speakText('Taarifa zimebadilishwa');
 }
-
 // ====================================================================
 // JACKPOT SYSTEM
 // ====================================================================
