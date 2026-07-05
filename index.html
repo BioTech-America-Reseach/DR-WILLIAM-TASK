@@ -1,0 +1,2627 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Dr. William - Mfumo Kamili v14</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #D4A24E;
+            --gold-dark: #8a6a2f;
+            --gold-soft: rgba(212,162,78,0.15);
+            --bg: #0B0F14;
+            --panel: #141A21;
+            --panel-2: #1B232C;
+            --line: rgba(255,255,255,0.08);
+            --text: #ECEFF2;
+            --text-dim: #8C97A3;
+            --text-faint: #5B6670;
+            --green: #3DBE7A;
+            --green-soft: rgba(61,190,122,0.14);
+            --red: #E2574C;
+            --red-soft: rgba(226,87,76,0.14);
+            --blue: #4A9BE8;
+            --orange: #F5A623;
+            --orange-soft: rgba(245,166,35,0.14);
+            --purple: #8B5CF6;
+            --pink: #EC4899;
+            --teal: #14B8A6;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 12px;
+            padding-bottom: 80px;
+        }
+        .app-container { max-width: 1200px; margin: 0 auto; }
+        .btn-gold { background: var(--gold); color: #1a1305; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 14px; transition: all 0.2s; }
+        .btn-gold:hover { opacity: 0.85; transform: scale(0.97); }
+        .btn-ghost { background: var(--panel-2); color: var(--text-dim); border: 1px solid var(--line); padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 14px; }
+        .btn-ghost:hover { border-color: var(--gold); color: var(--text); }
+        .btn-red { background: var(--red-soft); color: var(--red); border: 1px solid rgba(226,87,76,0.3); padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 14px; }
+        .btn-red:hover { opacity: 0.8; }
+        .btn-danger { background: #dc3545; color: #fff; border: none; padding: 4px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+        .btn-edit { background: var(--blue); color: #fff; border: none; padding: 4px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+        .btn-sm { padding: 6px 14px; font-size: 12px; }
+        .btn-green { background: var(--green); color: #0a2818; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; }
+        .btn-purple { background: var(--purple); color: #fff; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 14px; }
+        .btn-orange { background: var(--orange); color: #1a1305; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; }
+        .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; margin-bottom: 12px; }
+        .card-gold { border-color: var(--gold); background: rgba(212,162,78,0.06); }
+        .card-green { border-color: var(--green); background: rgba(61,190,122,0.06); }
+        .card-red { border-color: var(--red); background: rgba(226,87,76,0.06); }
+        .card-blue { border-color: var(--blue); background: rgba(74,155,232,0.06); }
+        .card-pink { border-color: var(--pink); background: rgba(236,72,153,0.06); }
+        .card-teal { border-color: var(--teal); background: rgba(20,184,166,0.06); }
+        .card-purple { border-color: var(--purple); background: rgba(139,92,246,0.06); }
+        input, select, textarea {
+            background: var(--panel-2);
+            border: 1px solid var(--line);
+            color: var(--text);
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+            width: 100%;
+            font-family: inherit;
+        }
+        input:focus, select:focus, textarea:focus { border-color: var(--gold); }
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 10px 16px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .topbar .brand { display: flex; align-items: center; gap: 10px; }
+        .topbar .brand .icon { width: 38px; height: 38px; background: var(--gold); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #1a1305; font-size: 18px; }
+        .topbar .brand .name { font-weight: 700; font-size: 16px; }
+        .topbar .brand .name span { color: var(--gold); }
+        .topbar .brand .role { font-size: 10px; color: var(--text-dim); }
+        .topbar-right { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .topbar-right .user-badge { background: var(--panel-2); border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; font-size: 12px; }
+        .clock-display { font-size: 12px; color: var(--text-dim); font-family: monospace; }
+        .nav-tabs { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; overflow-x: auto; padding-bottom: 4px; }
+        .nav-tab { padding: 6px 14px; border-radius: 10px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text-dim); border: 1px solid transparent; background: transparent; transition: all 0.15s; white-space: nowrap; }
+        .nav-tab:hover { background: var(--panel); color: var(--text); }
+        .nav-tab.active { background: var(--panel); border-color: var(--gold); color: var(--gold); }
+        .nav-tab.ai-tab { border-color: var(--purple); color: var(--purple); }
+        .nav-tab.ai-tab.active { background: var(--purple); color: #fff; border-color: var(--purple); }
+        .page { display: none; animation: fadeIn 0.3s; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 14px; }
+        .stat-card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px; text-align: center; }
+        .stat-card .number { font-size: 24px; font-weight: 700; color: var(--gold); }
+        .stat-card .number.green { color: var(--green); }
+        .stat-card .number.red { color: var(--red); }
+        .stat-card .number.blue { color: var(--blue); }
+        .stat-card .number.purple { color: var(--purple); }
+        .stat-card .label { font-size: 11px; color: var(--text-dim); }
+        .task-item { background: var(--panel-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; display: flex; align-items: center; gap: 10px; margin-bottom: 6px; transition: all 0.3s; }
+        .task-item:hover { border-color: var(--gold); }
+        .task-item.done { opacity: 0.6; }
+        .task-item.done .task-name { text-decoration: line-through; }
+        .task-item .task-check { width: 26px; height: 26px; border-radius: 8px; border: 2px solid var(--line); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: var(--panel); font-size: 14px; color: transparent; transition: all 0.2s; }
+        .task-item .task-check:hover { border-color: var(--gold); }
+        .task-item .task-check.checked { background: var(--green); border-color: var(--green); color: #0a2818; }
+        .task-item .task-info { flex: 1; }
+        .task-item .task-name { font-size: 14px; font-weight: 500; }
+        .task-item .task-meta { font-size: 11px; color: var(--text-faint); }
+        .task-item .task-status { font-size: 11px; padding: 2px 12px; border-radius: 999px; font-weight: 600; }
+        .task-item .task-status.pending { background: var(--red-soft); color: var(--red); }
+        .task-item .task-status.done { background: var(--green-soft); color: var(--green); }
+        .task-item .task-status.approved { background: var(--gold-soft); color: var(--gold); }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(6px); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-overlay.open { display: flex; }
+        .modal-box { background: var(--panel); border: 1px solid var(--gold); border-radius: 16px; padding: 24px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto; animation: modalIn 0.3s ease; }
+        @keyframes modalIn { from { opacity:0; transform:scale(0.95) translateY(20px); } to { opacity:1; transform:scale(1) translateY(0); } }
+        .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+        .modal-head h3 { font-size: 18px; font-weight: 700; }
+        .modal-close { background: var(--panel-2); border: 1px solid var(--line); width: 32px; height: 32px; border-radius: 8px; color: var(--text-dim); cursor: pointer; font-size: 18px; }
+        .modal-close:hover { background: var(--red-soft); color: var(--red); }
+        .modal-box .field { margin-bottom: 10px; }
+        .modal-box .field label { display: block; font-size: 12px; color: var(--text-dim); margin-bottom: 4px; font-weight: 500; }
+        .modal-box .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 14px; }
+        .toast-stack { position: fixed; bottom: 80px; right: 16px; z-index: 2000; display: flex; flex-direction: column; gap: 6px; max-width: 340px; }
+        .toast { background: var(--panel-2); border: 1px solid var(--line); border-left: 4px solid var(--gold); border-radius: 10px; padding: 10px 14px; font-size: 13px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); animation: toastIn 0.3s ease; }
+        @keyframes toastIn { from { opacity:0; transform:translateX(30px); } to { opacity:1; transform:translateX(0); } }
+        .toast.warn { border-left-color: var(--red); }
+        .toast.ok { border-left-color: var(--green); }
+        .login-box { background: var(--panel); border: 1px solid var(--gold); border-radius: 20px; padding: 32px; max-width: 400px; width: 100%; margin: 0 auto; text-align: center; }
+        .login-box .logo { font-size: 32px; font-weight: 700; color: var(--gold); }
+        .login-box .subtitle { color: var(--text-dim); font-size: 14px; margin-bottom: 20px; }
+        .login-box .field { margin-bottom: 14px; text-align: left; }
+        .login-box .field label { display: block; font-size: 12px; color: var(--text-dim); margin-bottom: 4px; font-weight: 500; }
+        .login-box .login-error { color: var(--red); font-size: 13px; margin-top: 8px; display: none; }
+        .login-box .password-wrapper { display: flex; align-items: center; gap: 8px; }
+        .login-box .password-wrapper input { flex: 1; }
+        .password-toggle { cursor: pointer; font-size: 16px; color: var(--text-dim); padding: 8px; }
+        .admin-user-card { background: var(--panel-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px; }
+        .admin-user-card .user-info .name { font-weight: 600; font-size: 14px; }
+        .admin-user-card .user-info .role { font-size: 11px; color: var(--text-dim); }
+        .admin-user-card .user-actions { display: flex; gap: 4px; flex-wrap: wrap; }
+        .admin-only { background: rgba(212,162,78,0.2); color: var(--gold); font-size: 10px; padding: 2px 12px; border-radius: 999px; }
+        .cloud-badge { background: rgba(74,155,232,0.15); color: var(--blue); font-size: 10px; padding: 2px 10px; border-radius: 999px; display: inline-flex; align-items: center; gap: 4px; }
+        .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        @media (max-width: 800px) { .admin-grid { grid-template-columns: 1fr; } }
+        .sync-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+        .sync-dot.online { background: var(--green); }
+        .sync-dot.offline { background: var(--red); animation: blink 1s infinite; }
+        .sync-dot.syncing { background: var(--gold); animation: blink 0.5s infinite; }
+        @keyframes blink { 50% { opacity: 0.3; } }
+        .staff-info-card .row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; }
+        .staff-info-card .row:last-child { border-bottom: none; }
+        .staff-info-card .label { color: var(--text-dim); }
+        .staff-info-card .value { font-weight: 500; }
+        .attendance-box { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+        @media (max-width: 600px) { .attendance-box { grid-template-columns: 1fr; } }
+        .attendance-card { background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; padding: 16px; text-align: center; }
+        .attendance-card .time { font-size: 28px; font-weight: 700; color: var(--gold); font-family: monospace; }
+        .attendance-card .label { font-size: 12px; color: var(--text-dim); }
+        .attendance-card .status-badge { display: inline-block; padding: 4px 16px; border-radius: 999px; font-size: 12px; font-weight: 600; margin-top: 4px; }
+        .status-badge.in { background: var(--green-soft); color: var(--green); }
+        .status-badge.out { background: var(--red-soft); color: var(--red); }
+        .status-badge.pending { background: var(--gold-soft); color: var(--gold); }
+        .timer-display { font-size: 28px; font-weight: 700; color: var(--gold); text-align: center; padding: 8px 0; font-family: monospace; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 8px; }
+        .calendar-grid .day { background: var(--panel-2); border-radius: 6px; padding: 6px 2px; text-align: center; font-size: 12px; color: var(--text-dim); transition: all 0.2s; cursor: default; position: relative; }
+        .calendar-grid .day.has-task { border: 1px solid var(--gold); color: var(--gold); cursor: pointer; }
+        .calendar-grid .day.has-task:hover { background: rgba(212,162,78,0.15); transform: scale(1.05); }
+        .calendar-grid .day.today { background: rgba(212,162,78,0.2); border: 2px solid var(--gold); color: var(--gold); font-weight: 700; }
+        .calendar-grid .day .day-num { font-size: 13px; font-weight: 600; }
+        .calendar-grid .day .day-badge { font-size: 8px; }
+        .calendar-grid .day.has-event { border: 1px solid var(--red); color: var(--red); }
+        .calendar-grid .day.has-event:hover { background: rgba(226,87,76,0.15); transform: scale(1.05); }
+        .calendar-grid .day.has-attendance { border: 1px solid var(--green); }
+        .patient-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .patient-table th { background: var(--panel-2); color: var(--gold); padding: 10px 8px; text-align: left; border: 1px solid var(--line); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .patient-table td { padding: 8px; border: 1px solid var(--line); vertical-align: middle; }
+        .patient-table tr:hover td { background: rgba(212,162,78,0.05); }
+        .patient-table .status-taken { color: var(--green); font-weight: 600; }
+        .patient-table .status-not-taken { color: var(--red); font-weight: 600; }
+        .patient-table .action-btns { display: flex; gap: 4px; flex-wrap: wrap; }
+        .table-responsive { overflow-x: auto; }
+        .sale-item { background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; margin-bottom: 6px; border-left: 3px solid var(--green); }
+        .sale-item .sale-product { font-weight: 600; font-size: 14px; }
+        .sale-item .sale-detail { font-size: 12px; color: var(--text-dim); }
+        .sale-item .sale-amount { color: var(--green); font-weight: 700; }
+        .bonus-3d { background: linear-gradient(135deg, var(--gold), #f7d875, var(--gold-dark)); border-radius: 16px; padding: 20px; text-align: center; box-shadow: 0 8px 32px rgba(212,162,78,0.3); margin-bottom: 14px; border: 2px solid rgba(255,215,0,0.3); }
+        .bonus-3d .amount { font-size: 48px; font-weight: 800; color: #1a1305; }
+        .bonus-3d .label { font-size: 14px; color: #1a1305; opacity: 0.8; }
+        .bonus-3d .winner { font-size: 18px; font-weight: 700; color: #1a1305; margin-top: 8px; }
+        .receipt-container { background: #fff; color: #1a1a2e; padding: 20px; border-radius: 12px; max-width: 400px; margin: 0 auto; font-size: 13px; }
+        .receipt-container .receipt-header { text-align: center; border-bottom: 2px dashed #ddd; padding-bottom: 10px; margin-bottom: 10px; }
+        .receipt-container .receipt-header h2 { font-size: 18px; color: var(--gold); }
+        .receipt-container .receipt-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #f0f0f0; }
+        .receipt-container .receipt-row.total { font-weight: 700; font-size: 16px; border-top: 2px solid #333; border-bottom: none; padding-top: 10px; }
+        .receipt-container .receipt-footer { text-align: center; margin-top: 10px; font-size: 11px; color: #888; border-top: 2px dashed #ddd; padding-top: 10px; }
+        .voice-settings { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+        .voice-settings select, .voice-settings input { width: auto; min-width: 120px; padding: 6px 10px; font-size: 12px; }
+        .scrolling-text { overflow: hidden; white-space: nowrap; background: var(--gold-soft); padding: 8px 0; border-radius: 8px; margin-top: 8px; border: 1px solid var(--gold); }
+        .scrolling-text .scroll-content { display: inline-block; animation: scrollText 20s linear infinite; color: var(--gold); font-weight: 600; font-size: 14px; }
+        @keyframes scrollText { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .scrolling-text:hover .scroll-content { animation-play-state: paused; }
+        .notification-bell { position: relative; cursor: pointer; }
+        .notification-bell .badge { position: absolute; top: -5px; right: -5px; background: var(--red); color: #fff; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; animation: blink 0.5s infinite; }
+        .signature-area { border: 2px solid var(--gold); border-radius: 8px; padding: 16px; background: rgba(255,255,255,0.05); min-height: 80px; }
+        .signature-area .sig-preview { font-size: 28px; font-weight: 700; color: var(--gold); font-family: 'Brush Script MT', cursive; text-align: center; }
+        .signature-area .sig-date { font-size: 12px; color: var(--text-dim); text-align: center; margin-top: 4px; }
+        .salary-card { background: linear-gradient(135deg, var(--teal), var(--blue)); border-radius: 12px; padding: 16px; text-align: center; color: #fff; }
+        .salary-card .amount { font-size: 32px; font-weight: 800; }
+        .salary-card .label { font-size: 12px; opacity: 0.8; }
+        .ai-chat-box { max-height: 300px; overflow-y: auto; background: var(--panel-2); border-radius: 8px; padding: 12px; margin-bottom: 10px; border: 1px solid var(--line); }
+        .ai-chat-box .msg-user { text-align: right; margin: 6px 0; }
+        .ai-chat-box .msg-user span { background: var(--blue); color: #fff; padding: 8px 14px; border-radius: 12px; display: inline-block; max-width: 80%; font-size: 13px; }
+        .ai-chat-box .msg-ai { text-align: left; margin: 6px 0; }
+        .ai-chat-box .msg-ai span { background: var(--panel); color: var(--text); padding: 8px 14px; border-radius: 12px; display: inline-block; max-width: 80%; font-size: 13px; border: 1px solid var(--purple); }
+        .ai-response-box { background: var(--panel-2); border-radius: 8px; padding: 16px; border: 1px solid var(--purple); max-height: 400px; overflow-y: auto; font-size: 13px; line-height: 1.8; }
+        .ai-response-box pre { white-space: pre-wrap; font-family: inherit; }
+        .signature-confirm-btn { background: var(--green); color: #fff; border: none; padding: 8px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 14px; }
+        .signature-confirm-btn:hover { opacity: 0.8; }
+        @media (max-width: 640px) {
+            .app-container { padding: 4px; }
+            .topbar { padding: 8px 12px; }
+            .topbar .brand .name { font-size: 13px; }
+            .login-box { padding: 20px; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .nav-tab { font-size: 10px; padding: 4px 10px; }
+            .modal-box { padding: 16px; }
+            .admin-grid { grid-template-columns: 1fr; }
+            .patient-table th, .patient-table td { padding: 6px 4px; font-size: 11px; }
+            .voice-settings { flex-direction: column; }
+            .voice-settings select, .voice-settings input { width: 100%; }
+            .signature-area .sig-preview { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="toast-stack" id="toastStack"></div>
+
+<!-- LOGIN PAGE -->
+<div id="loginPage" style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:16px;">
+    <div class="login-box">
+        <div class="logo">🩺 Dr. William</div>
+        <div class="subtitle">Mfumo Kamili v14 - Salary with Signature</div>
+        <div id="networkStatus" style="font-size:12px;color:var(--text-dim);margin-bottom:12px;">
+            <span id="networkDot" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--green);"></span>
+            <span id="networkText">Online</span>
+        </div>
+        <div class="field">
+            <label>Namba ya Mfanyakazi</label>
+            <input type="text" id="loginId" placeholder="Weka namba yako" value="">
+        </div>
+        <div class="field">
+            <label>Nenosiri</label>
+            <div class="password-wrapper">
+                <input type="password" id="loginPass" placeholder="Weka nenosiri lako" value="">
+                <span class="password-toggle" onclick="toggleLoginPass()"><i class="fa-regular fa-eye"></i></span>
+            </div>
+        </div>
+        <div class="login-error" id="loginError">Namba au nenosiri si sahihi!</div>
+        <button class="btn-gold" style="width:100%;padding:12px;font-size:16px;" onclick="handleLogin()">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i> Ingia
+        </button>
+        <div style="margin-top:12px;font-size:11px;color:var(--text-faint);">
+            <p>👑 Admin: <strong>1616</strong> / <strong>1616</strong></p>
+            <p>✍️ Signature ya Admin inahitajika kwa mshahara</p>
+            <p>📱 Inafanya kazi kwa kifaa chochote</p>
+        </div>
+    </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="mainApp" style="display:none;">
+    <div class="app-container">
+
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <div class="brand">
+                <div class="icon">🩺</div>
+                <div>
+                    <div class="name">Dr. <span>William</span></div>
+                    <div class="role" id="userRoleDisplay">Mfanyakazi</div>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-dim);">
+                    <span class="sync-dot online" id="syncDot"></span>
+                    <span id="syncText">Cloud</span>
+                </div>
+                <div class="notification-bell" onclick="showNotifications()">
+                    <i class="fa-solid fa-bell" style="font-size:18px;color:var(--gold);"></i>
+                    <span class="badge" id="notificationBadge" style="display:none;">0</span>
+                </div>
+                <div class="user-badge">
+                    <span id="userNameDisplay">Mfanyakazi</span>
+                    <span style="color:var(--text-faint);font-size:10px;" id="userIdDisplay">(***)</span>
+                </div>
+                <div class="clock-display" id="clockDisplay">--:--:--</div>
+                <button class="btn-ghost" style="padding:4px 12px;font-size:11px;" onclick="handleLogout()">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- NAV TABS -->
+        <div class="nav-tabs" id="navTabs">
+            <div class="nav-tab active" onclick="showPage('dashboard')">🏠 Nyumbani</div>
+            <div class="nav-tab" onclick="showPage('tasks')">📋 Majukumu</div>
+            <div class="nav-tab" onclick="showPage('attendance')">🕐 Mahudhurio</div>
+            <div class="nav-tab" onclick="showPage('performance')">📊 Utendaji</div>
+            <div class="nav-tab" onclick="showPage('calendar')">📅 Kalenda</div>
+            <div class="nav-tab" onclick="showPage('patients')">🧑‍⚕️ Wagonjwa</div>
+            <div class="nav-tab" onclick="showPage('stock')">📦 Stock</div>
+            <div class="nav-tab" onclick="showPage('sales')">💰 Mauzo</div>
+            <div class="nav-tab" onclick="showPage('expenses')">💸 Matumizi</div>
+            <div class="nav-tab" onclick="showPage('salary')">💰 Mshahara</div>
+            <div class="nav-tab ai-tab" id="aiTab" onclick="showPage('ai')" style="display:none;">🤖 AI</div>
+            <div class="nav-tab" id="adminTab" onclick="showPage('admin')" style="display:none;">👑 Admin</div>
+        </div>
+
+        <!-- PAGE: DASHBOARD -->
+        <div class="page active" id="page-dashboard">
+            <div class="bonus-3d" id="bonus3dContainer">
+                <div class="label">🏆 MFANYAKAZI BORA WA MWEZI</div>
+                <div class="winner" id="bonusWinner">Inasubiri...</div>
+                <div class="amount" id="bonusAmount">TSh 0</div>
+                <div class="label">Bonus ya Mwezi</div>
+            </div>
+            <div class="scrolling-text" id="scrollingTextContainer">
+                <div class="scroll-content" id="scrollingTextContent">🎉 Karibu Dr. William!</div>
+            </div>
+            <div class="staff-info-card card" id="staffInfoCard">
+                <div class="row"><span class="label">Jina</span><span class="value" id="staffName">-</span></div>
+                <div class="row"><span class="label">Namba</span><span class="value" id="staffId">-</span></div>
+                <div class="row"><span class="label">Simu</span><span class="value" id="staffPhone">-</span></div>
+                <div class="row"><span class="label">Mshahara Uliobaki</span><span class="value" id="staffSalary">TSh 0</span></div>
+                <div class="row"><span class="label">Kuingia</span><span class="value" id="staffCheckIn">-</span></div>
+                <div class="row"><span class="label">Kutoka</span><span class="value" id="staffCheckOut">-</span></div>
+                <div class="row"><span class="label">Muda wa Kazi</span><span class="value" id="staffWorkTime">-</span></div>
+                <div class="row"><span class="label">Hali</span><span class="value" id="staffStatus">-</span></div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card"><div class="number" id="statTasksTotal">0</div><div class="label">Majukumu</div></div>
+                <div class="stat-card"><div class="number green" id="statTasksDone">0</div><div class="label">Yamekamilika</div></div>
+                <div class="stat-card"><div class="number red" id="statTasksPending">0</div><div class="label">Yamesalia</div></div>
+                <div class="stat-card"><div class="number gold" id="statPerformance">0%</div><div class="label">Utendaji</div></div>
+            </div>
+            <div class="card card-gold">
+                <h4 style="margin-bottom:8px;color:var(--gold);font-size:15px;">
+                    <i class="fa-solid fa-bullhorn"></i> Habari za Leo
+                    <span class="cloud-badge"><i class="fa-solid fa-cloud"></i> Cloud</span>
+                </h4>
+                <p style="color:var(--text-dim);font-size:14px;" id="dashboardGreeting">Karibu! Angalia majukumu yako ya leo.</p>
+            </div>
+            <div style="margin-top:12px;">
+                <h4 style="font-size:14px;margin-bottom:8px;">Majukumu ya Leo</h4>
+                <div id="dashboardTaskList"></div>
+            </div>
+        </div>
+
+        <!-- PAGE: TASKS -->
+        <div class="page" id="page-tasks">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+                <div>
+                    <h3 style="font-size:17px;">📋 Majukumu Yangu</h3>
+                    <p style="font-size:12px;color:var(--text-dim);">Tarehe: <span id="taskDateDisplay"></span></p>
+                </div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                    <button class="btn-gold btn-sm" onclick="openModal('newTaskModal')" id="addTaskBtn"><i class="fa-solid fa-plus"></i> Ongeza</button>
+                </div>
+            </div>
+            <div id="taskListContainer"></div>
+            <div id="allTasksContainer" class="all-tasks-container" style="display:none;">
+                <h4 style="font-size:14px;margin-bottom:8px;color:var(--gold);">📋 Majukumu ya Wafanyakazi Wote</h4>
+                <div id="allTasksList"></div>
+            </div>
+        </div>
+
+        <!-- PAGE: ATTENDANCE -->
+        <div class="page" id="page-attendance">
+            <h3 style="font-size:17px;margin-bottom:12px;"><i class="fa-solid fa-clock"></i> Mahudhurio</h3>
+            <div class="card">
+                <h4 style="font-size:14px;margin-bottom:8px;">📅 Chagua Tarehe</h4>
+                <input type="date" id="attendanceDatePicker" style="max-width:200px;" onchange="renderAttendance()">
+            </div>
+            <div class="attendance-box">
+                <div class="attendance-card">
+                    <div class="label">🕐 Kuingia</div>
+                    <div class="time" id="checkInTime">--:--:--</div>
+                    <div><span class="status-badge pending" id="checkInStatus">Bado</span></div>
+                    <button class="btn-gold" style="margin-top:8px;width:100%;" onclick="handleCheckIn()" id="checkInBtn"><i class="fa-solid fa-arrow-right-to-bracket"></i> Ingia</button>
+                </div>
+                <div class="attendance-card">
+                    <div class="label">🕐 Kutoka</div>
+                    <div class="time" id="checkOutTime">--:--:--</div>
+                    <div><span class="status-badge pending" id="checkOutStatus">Bado</span></div>
+                    <button class="btn-red" style="margin-top:8px;width:100%;" onclick="handleCheckOut()" id="checkOutBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Toka</button>
+                </div>
+            </div>
+            <div class="card" style="text-align:center;">
+                <div class="label" style="font-size:12px;color:var(--text-dim);">Muda wa Kazi</div>
+                <div class="timer-display" id="workTimerDisplay">00:00:00</div>
+                <div style="font-size:12px;color:var(--text-faint);margin-top:4px;" id="workStatusDisplay">⏳ Subiri kuingia</div>
+            </div>
+            <div class="card">
+                <h4 style="font-size:14px;margin-bottom:8px;">📋 Rekodi yangu</h4>
+                <div id="attendanceHistory"></div>
+            </div>
+            <div class="card card-gold">
+                <h4 style="font-size:14px;color:var(--gold);margin-bottom:8px;">👥 Mahudhurio ya Wafanyakazi Wote</h4>
+                <div id="allStaffAttendance"></div>
+            </div>
+        </div>
+
+        <!-- PAGE: PERFORMANCE -->
+        <div class="page" id="page-performance">
+            <h3 style="font-size:17px;margin-bottom:12px;"><i class="fa-solid fa-chart-line"></i> Utendaji</h3>
+            <div class="card" style="text-align:center;">
+                <div style="padding:10px 0;">
+                    <div style="font-size:48px;font-weight:700;color:var(--gold);" id="performanceValue">0%</div>
+                    <div style="font-size:12px;color:var(--text-dim);">Majukumu Yamekamilika</div>
+                </div>
+                <p style="color:var(--text-dim);font-size:13px;" id="performanceMessage">Bado hakuna majukumu.</p>
+            </div>
+            <div class="card">
+                <h4 style="font-size:14px;margin-bottom:8px;">Mwenendo wa Mwezi</h4>
+                <div id="monthlyPerformance"></div>
+            </div>
+            <div class="card card-green">
+                <h4 style="font-size:14px;margin-bottom:8px;">🏆 Bonus Zilizopatikana</h4>
+                <div id="bonusDisplay"></div>
+            </div>
+        </div>
+
+        <!-- PAGE: CALENDAR -->
+        <div class="page" id="page-calendar">
+            <h3 style="font-size:17px;margin-bottom:12px;"><i class="fa-solid fa-calendar-days"></i> Kalenda</h3>
+            <div class="card">
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:8px;">
+                    <button class="btn-ghost btn-sm" onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                    <span style="font-weight:600;font-size:15px;" id="calendarMonthYear"></span>
+                    <button class="btn-ghost btn-sm" onclick="changeMonth(1)"><i class="fa-solid fa-chevron-right"></i></button>
+                    <button class="btn-gold btn-sm" onclick="openModal('newEventModal')"><i class="fa-solid fa-plus"></i> Ongeza Tukio</button>
+                </div>
+                <div class="calendar-grid" id="calendarGrid"></div>
+            </div>
+            <div style="margin-top:10px;">
+                <h4 style="font-size:13px;margin-bottom:6px;">📌 Majukumu na Matukio ya Tarehe</h4>
+                <div id="calendarTaskList"></div>
+            </div>
+        </div>
+
+        <!-- PAGE: PATIENTS -->
+        <div class="page" id="page-patients">
+            <h3 style="font-size:17px;margin-bottom:12px;"><i class="fa-solid fa-users"></i> Wagonjwa</h3>
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
+                <div class="patient-count">
+                    Jumla: <strong id="patientTotalCount">0</strong> · 
+                    Wamechukua Dawa: <strong style="color:var(--green);" id="patientTakenCount">0</strong> · 
+                    Hawajachukua: <strong style="color:var(--red);" id="patientNotTakenCount">0</strong>
+                </div>
+                <button class="btn-gold btn-sm" onclick="openModal('newPatientModal')">
+                    <i class="fa-solid fa-user-plus"></i> Sajili Mgonjwa
+                </button>
+            </div>
+            <div class="card" style="padding:0;overflow:hidden;">
+                <div class="table-responsive">
+                    <table class="patient-table" id="patientTable">
+                        <thead>
+                            <tr><th>#</th><th>Jina</th><th>Simu</th><th>Mahali</th><th>Maelezo</th><th>Dawa</th><th>Tarehe</th><th>Vitendo</th></tr>
+                        </thead>
+                        <tbody id="patientTableBody">
+                            <tr><td colspan="8" style="text-align:center;padding:30px;color:var(--text-faint);">Hakuna wagonjwa.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE: STOCK -->
+        <div class="page" id="page-stock">
+            <h3 style="font-size:17px;margin-bottom:12px;"><i class="fa-solid fa-warehouse"></i> Stock</h3>
+            <div id="adminStockForm" style="display:none;" class="card card-gold">
+                <h4 style="font-size:14px;color:var(--gold);margin-bottom:8px;">📦 Ongeza Stock</h4>
+                <div class="field"><label>Jina la Bidhaa</label><input type="text" id="stockProductName" placeholder="K.mf. Panadol"></div>
+                <div class="field"><label>Maelezo</label><input type="text" id="stockProductDesc" placeholder="Maelezo"></div>
+                <div class="field-row">
+                    <div class="field"><label>Idadi</label><input type="number" id="stockQty" placeholder="K.mf. 100"></div>
+                    <div class="field"><label>Bei (TSh)</label><input type="number" id="stockPrice" placeholder="K.mf. 5000"></div>
+                </div>
+                <button class="btn-gold" onclick="adminUpdateStock()"><i class="fa-solid fa-check"></i> Hifadhi</button>
+            </div>
+            <div class="card" style="padding:0;overflow:hidden;">
+                <div class="table-responsive">
+                    <table class="patient-table" id="stockTable">
+                        <thead><tr><th>#</th><th>Bidhaa</th><th>Idadi</th><th>Bei</th><th>Jumla</th></tr></thead>
+                        <tbody id="stockTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE: SALES -->
+        <div class="page" id="page-sales">
+            <h3 style="font-size:17px;margin-bottom:12px;"><i class="fa-solid fa-cash-register"></i> Mauzo</h3>
+            <div class="card">
+                <h4 style="font-size:14px;margin-bottom:8px;">📝 Rekodi Mauzo</h4>
+                <div class="field"><label>Bidhaa</label>
+                    <select id="saleDrugSelect"></select>
+                </div>
+                <div class="field"><label>Idadi</label>
+                    <input type="number" id="saleQty" value="1" min="1">
+                </div>
+                <button class="btn-gold" onclick="recordSale()"><i class="fa-solid fa-check"></i> Rekodi</button>
+            </div>
+            <div class="card">
+                <h4 style="font-size:14px;margin-bottom:8px;">📊 Historia</h4>
+                <div id="salesHistory"></div>
+            </div>
+        </div>
+
+        <!-- PAGE: EXPENSES -->
+        <div class="page" id="page-expenses">
+            <h3 style="font-size:17px;margin-bottom:12px;"><i class="fa-solid fa-money-bill-wave"></i> Matumizi</h3>
+            <button class="btn-gold btn-sm" onclick="openModal('newExpenseModal')" id="addExpenseBtn" style="display:none;"><i class="fa-solid fa-plus"></i> Ongeza</button>
+            <div id="expensesContainer"></div>
+            <div class="card card-gold">
+                <h4 style="font-size:14px;color:var(--gold);">📊 Muhtasari</h4>
+                <div id="expenseSummary"></div>
+            </div>
+        </div>
+
+        <!-- PAGE: SALARY -->
+        <div class="page" id="page-salary">
+            <h3 style="font-size:17px;margin-bottom:12px;"><i class="fa-solid fa-money-bill"></i> Mshahara</h3>
+            
+            <!-- SALARY CARD -->
+            <div class="salary-card" style="margin-bottom:12px;">
+                <div class="label">💰 Mshahara Wako</div>
+                <div class="amount" id="mySalaryAmount">TSh 0</div>
+                <div style="font-size:12px;opacity:0.8;margin-top:4px;">Mshahara Uliobaki</div>
+            </div>
+
+            <!-- REQUEST SALARY -->
+            <div class="card card-gold">
+                <h4 style="font-size:14px;color:var(--gold);margin-bottom:8px;">📋 Omba Mshahara</h4>
+                <div class="field"><label>Kiasi Unachotaka (TSh)</label>
+                    <input type="number" id="salaryRequestAmount" placeholder="K.mf. 200000">
+                </div>
+                <div class="field"><label>Maelezo (hiari)</label>
+                    <input type="text" id="salaryRequestNote" placeholder="K.mf. Kwa mahitaji ya dharura">
+                </div>
+                <button class="btn-gold" onclick="requestSalary()"><i class="fa-solid fa-paper-plane"></i> Toa Ombi</button>
+            </div>
+
+            <!-- HISTORY -->
+            <div class="card">
+                <h4 style="font-size:14px;margin-bottom:8px;">📋 Historia ya Maombi</h4>
+                <div id="salaryRequestsHistory"></div>
+            </div>
+        </div>
+
+        <!-- PAGE: AI -->
+        <div class="page" id="page-ai">
+            <h3 style="font-size:17px;margin-bottom:12px;">
+                <i class="fa-solid fa-robot"></i> AI Assistant
+                <span class="admin-only"><i class="fa-solid fa-lock"></i> Admin</span>
+            </h3>
+            <div class="card card-purple">
+                <h4 style="font-size:15px;color:var(--purple);margin-bottom:10px;">💬 Uliza AI</h4>
+                <div id="aiChatMessages" class="ai-chat-box">
+                    <div style="text-align:center;color:var(--text-dim);font-size:12px;padding:10px;">💬 Uliza AI kuhusu ofisi</div>
+                </div>
+                <div style="display:flex;gap:8px;">
+                    <input type="text" id="aiChatInput" placeholder="Uliza AI..." style="flex:1;">
+                    <button class="btn-ai btn-sm" onclick="sendAIChat()"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE: ADMIN -->
+        <div class="page" id="page-admin">
+            <h3 style="font-size:17px;margin-bottom:12px;">
+                <i class="fa-solid fa-crown"></i> Dhibiti Wafanyakazi
+                <span class="admin-only"><i class="fa-solid fa-lock"></i> Admin</span>
+            </h3>
+
+            <!-- SALARY REQUESTS WITH SIGNATURE -->
+            <div class="card card-gold">
+                <h4 style="font-size:14px;color:var(--gold);margin-bottom:8px;">
+                    ✍️ Maombi ya Mshahara
+                    <span class="cloud-badge"><i class="fa-solid fa-pen"></i> Signature Required</span>
+                </h4>
+                <div id="adminSalaryRequests"></div>
+            </div>
+
+            <div class="admin-grid">
+                <div class="card">
+                    <h4 style="font-size:14px;margin-bottom:8px;">👥 Wafanyakazi</h4>
+                    <div id="adminUserList"></div>
+                    <button class="btn-gold btn-sm" style="width:100%;margin-top:8px;" onclick="openModal('newUserModal')">
+                        <i class="fa-solid fa-user-plus"></i> Sajili
+                    </button>
+                    <button class="btn-ghost btn-sm" style="width:100%;margin-top:4px;" onclick="syncData()">
+                        <i class="fa-solid fa-cloud"></i> Sawazisha
+                    </button>
+                </div>
+                <div class="card">
+                    <h4 style="font-size:14px;margin-bottom:8px;">📋 Gawanya Majukumu</h4>
+                    <div class="field"><label>Mfanyakazi</label><select id="adminTaskUser"></select></div>
+                    <div class="field"><label>Jina la Kazi</label><input type="text" id="adminTaskName" placeholder="K.mf. Andika ripoti"></div>
+                    <div class="field"><label>Maelezo</label><input type="text" id="adminTaskDesc" placeholder="Maelezo"></div>
+                    <div class="field"><label>Tarehe</label><input type="date" id="adminTaskDate"></div>
+                    <button class="btn-gold" style="width:100%;" onclick="adminAssignTask()"><i class="fa-solid fa-paper-plane"></i> Gawanya</button>
+                </div>
+            </div>
+
+            <div class="card card-blue">
+                <h4 style="font-size:14px;color:var(--blue);margin-bottom:8px;">✅ Thibitisha Majukumu</h4>
+                <div id="adminApproveTasks"></div>
+            </div>
+
+            <div class="card card-green">
+                <h4 style="font-size:14px;margin-bottom:8px;">🏆 Bonus</h4>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                    <div class="field"><label>Mfanyakazi</label><select id="adminBonusUser"></select></div>
+                    <div class="field"><label>Kiasi (TSh)</label><input type="number" id="adminBonusAmount" placeholder="K.mf. 50000"></div>
+                </div>
+                <div class="field"><label>Sababu</label><input type="text" id="adminBonusReason" placeholder="K.mf. Utendaji bora"></div>
+                <button class="btn-gold" onclick="adminAddBonus()"><i class="fa-solid fa-gift"></i> Toa Bonus</button>
+            </div>
+
+            <div class="card card-pink">
+                <h4 style="font-size:14px;color:var(--pink);margin-bottom:8px;">🎰 Jackpot</h4>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                    <div class="field"><label>Mfanyakazi Bora</label><select id="adminWinnerUser"></select></div>
+                    <div class="field"><label>Kiasi (TSh)</label><input type="number" id="adminWinnerAmount" placeholder="K.mf. 100000"></div>
+                </div>
+                <button class="btn-orange" onclick="setBonusWinner()"><i class="fa-solid fa-trophy"></i> Weka Mshindi</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- MODALS -->
+
+<!-- NEW TASK MODAL -->
+<div class="modal-overlay" id="newTaskModal">
+    <div class="modal-box">
+        <div class="modal-head"><h3>📋 Ongeza Kazi</h3><button class="modal-close" onclick="closeModal('newTaskModal')"><i class="fa-solid fa-xmark"></i></button></div>
+        <div class="field"><label>Jina la Kazi</label><input type="text" id="taskNameInput" placeholder="K.mf. Andika ripoti"></div>
+        <div class="field"><label>Maelezo</label><input type="text" id="taskDescInput" placeholder="Maelezo"></div>
+        <div class="field"><label>Tarehe</label><input type="date" id="taskDateInput"></div>
+        <div class="field"><label>Kipaumbele</label>
+            <select id="taskPriorityInput">
+                <option value="high">🔴 Juu</option>
+                <option value="medium" selected>🟡 Kati</option>
+                <option value="low">🟢 Chini</option>
+            </select>
+        </div>
+        <div class="modal-actions">
+            <button class="btn-ghost" onclick="closeModal('newTaskModal')">Ghairi</button>
+            <button class="btn-gold" onclick="confirmAddTask()"><i class="fa-solid fa-check"></i> Hifadhi</button>
+        </div>
+    </div>
+</div>
+
+<!-- NEW USER MODAL -->
+<div class="modal-overlay" id="newUserModal">
+    <div class="modal-box">
+        <div class="modal-head"><h3>👤 Sajili Mfanyakazi</h3><button class="modal-close" onclick="closeModal('newUserModal')"><i class="fa-solid fa-xmark"></i></button></div>
+        <div class="field"><label>Jina Kamili</label><input type="text" id="newUserName" placeholder="K.mf. John Doe"></div>
+        <div class="field"><label>Namba ya Mfanyakazi</label><input type="text" id="newUserId" placeholder="K.mf. 1234"></div>
+        <div class="field"><label>Nambari ya Simu</label><input type="text" id="newUserPhone" placeholder="K.mf. 0712345678"></div>
+        <div class="field"><label>Nenosiri</label><input type="text" id="newUserPass" placeholder="Nenosiri la kuingia" value="123"></div>
+        <div class="field"><label>Mshahara (TSh)</label><input type="number" id="newUserSalary" placeholder="K.mf. 500000"></div>
+        <div class="modal-actions">
+            <button class="btn-ghost" onclick="closeModal('newUserModal')">Ghairi</button>
+            <button class="btn-gold" onclick="confirmAddUser()"><i class="fa-solid fa-user-plus"></i> Sajili</button>
+        </div>
+    </div>
+</div>
+
+<!-- NEW PATIENT MODAL -->
+<div class="modal-overlay" id="newPatientModal">
+    <div class="modal-box">
+        <div class="modal-head"><h3>🧑‍⚕️ Sajili Mgonjwa</h3><button class="modal-close" onclick="closeModal('newPatientModal')"><i class="fa-solid fa-xmark"></i></button></div>
+        <div class="field"><label>Jina Kamili</label><input type="text" id="patientName" placeholder="K.mf. Jane Doe"></div>
+        <div class="field"><label>Nambari ya Simu</label><input type="text" id="patientPhone" placeholder="K.mf. 0712345678"></div>
+        <div class="field"><label>Mahali</label><input type="text" id="patientAddress" placeholder="K.mf. Dar es Salaam"></div>
+        <div class="field"><label>Maelezo</label><input type="text" id="patientNotes" placeholder="Maelezo ya mgonjwa"></div>
+        <div class="modal-actions">
+            <button class="btn-ghost" onclick="closeModal('newPatientModal')">Ghairi</button>
+            <button class="btn-gold" onclick="confirmAddPatient()"><i class="fa-solid fa-user-plus"></i> Sajili</button>
+        </div>
+    </div>
+</div>
+
+<!-- NEW EVENT MODAL -->
+<div class="modal-overlay" id="newEventModal">
+    <div class="modal-box">
+        <div class="modal-head"><h3>📅 Ongeza Tukio</h3><button class="modal-close" onclick="closeModal('newEventModal')"><i class="fa-solid fa-xmark"></i></button></div>
+        <div class="field"><label>Jina la Tukio</label><input type="text" id="eventTitle" placeholder="K.mf. Mkutano"></div>
+        <div class="field"><label>Tarehe</label><input type="date" id="eventDate"></div>
+        <div class="field"><label>Maelezo</label><input type="text" id="eventDesc" placeholder="Maelezo"></div>
+        <div class="modal-actions">
+            <button class="btn-ghost" onclick="closeModal('newEventModal')">Ghairi</button>
+            <button class="btn-gold" onclick="confirmAddEvent()"><i class="fa-solid fa-check"></i> Hifadhi</button>
+        </div>
+    </div>
+</div>
+
+<!-- NEW EXPENSE MODAL -->
+<div class="modal-overlay" id="newExpenseModal">
+    <div class="modal-box">
+        <div class="modal-head"><h3>💸 Ongeza Matumizi</h3><button class="modal-close" onclick="closeModal('newExpenseModal')"><i class="fa-solid fa-xmark"></i></button></div>
+        <div class="field"><label>Jina</label><input type="text" id="expenseName" placeholder="K.mf. Umeme"></div>
+        <div class="field"><label>Kiasi (TSh)</label><input type="number" id="expenseAmount" placeholder="K.mf. 50000"></div>
+        <div class="field"><label>Maelezo</label><input type="text" id="expenseDesc" placeholder="Maelezo"></div>
+        <div class="modal-actions">
+            <button class="btn-ghost" onclick="closeModal('newExpenseModal')">Ghairi</button>
+            <button class="btn-gold" onclick="confirmAddExpense()"><i class="fa-solid fa-check"></i> Hifadhi</button>
+        </div>
+    </div>
+</div>
+
+<!-- SIGNATURE MODAL - ADMIN KUANDIKA JINA -->
+<div class="modal-overlay" id="signatureModal">
+    <div class="modal-box">
+        <div class="modal-head">
+            <h3>✍️ Thibitisha kwa Signature</h3>
+            <button class="modal-close" onclick="closeModal('signatureModal')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div style="padding:10px 0;">
+            <div style="background:var(--gold-soft);border:1px solid var(--gold);border-radius:8px;padding:16px;text-align:center;margin-bottom:12px;">
+                <p style="color:var(--text-dim);font-size:13px;">💡 Andika jina lako kama signature</p>
+            </div>
+            
+            <div class="field">
+                <label>Jina Kamili la Admin (Signature)</label>
+                <input type="text" id="adminSignatureInput" placeholder="Andika jina lako hapa" style="font-size:20px;font-family:'Brush Script MT',cursive;">
+            </div>
+            
+            <div id="signaturePreview" class="signature-area" style="margin-top:10px;">
+                <div class="sig-preview" id="sigPreviewText">-</div>
+                <div class="sig-date" id="sigPreviewDate"></div>
+            </div>
+            
+            <div style="margin-top:10px;font-size:12px;color:var(--text-faint);">
+                <p>⚠️ Kwa kuandika jina lako, unathibitisha kuwa:</p>
+                <ul style="margin-left:20px;margin-top:4px;">
+                    <li>Umeidhinisha ombi hili</li>
+                    <li>Mshahara utapunguzwa kiotomatiki</li>
+                    <li>Hii ni sahihi halali ya Admin</li>
+                </ul>
+            </div>
+        </div>
+        <div class="modal-actions">
+            <button class="btn-ghost" onclick="closeModal('signatureModal')">Ghairi</button>
+            <button class="signature-confirm-btn" onclick="confirmSignature()">
+                <i class="fa-solid fa-check"></i> Thibitisha na Sahihi
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ====================================================================
+// SUPABASE CREDENTIALS
+// ====================================================================
+const SUPABASE_URL = 'https://bojxzkdewtwblemwrkzw.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_WWDU_VhQgF-1111lGKtJdA_fxD5Zo_w';
+
+// ====================================================================
+// CONSTANTS
+// ====================================================================
+const ADMIN_ID = '1616';
+const ADMIN_PASS = '1616';
+const STORAGE_KEY = 'dr_william_v14';
+
+// ====================================================================
+// DATA STORE
+// ====================================================================
+let db = loadData();
+let currentUser = null;
+let currentPage = 'dashboard';
+let calendarMonth = new Date().getMonth();
+let calendarYear = new Date().getFullYear();
+let workTimerInterval = null;
+let pendingSalaryRequestId = null;
+
+function loadData() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return getDefaultData();
+        return JSON.parse(raw);
+    } catch (e) { return getDefaultData(); }
+}
+
+function getDefaultData() {
+    return {
+        users: [{ id: ADMIN_ID, name: 'Admin', password: ADMIN_PASS, role: 'admin', phone: '0712345678', salary: 0, image: '' }],
+        tasks: [],
+        attendance: [],
+        patients: [],
+        stock: [],
+        sales: [],
+        expenses: [],
+        events: [],
+        bonuses: [],
+        salary_requests: [],
+        notifications: [],
+        winner: { user_id: null, amount: 0, name: 'Hakuna' },
+        scrolling_text: { id: 'st1', content: '🎉 Karibu Dr. William!' },
+        sync_pending: []
+    };
+}
+
+function saveData() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+    if (navigator.onLine) processSyncQueue();
+}
+
+// ====================================================================
+// SUPABASE CLIENT
+// ====================================================================
+const supabase = {
+    url: SUPABASE_URL,
+    key: SUPABASE_KEY,
+    async query(table, method = 'GET', data = null, id = null) {
+        const headers = {
+            'Content-Type': 'application/json',
+            'apikey': this.key,
+            'Authorization': 'Bearer ' + this.key
+        };
+        let url = `${this.url}/rest/v1/${table}`;
+        let options = { method, headers };
+        if (method === 'GET') url += '?select=*';
+        else if (method === 'POST') options.body = JSON.stringify(data);
+        else if (method === 'PATCH' && id) { url += `?id=eq.${id}`; options.body = JSON.stringify(data); }
+        else if (method === 'DELETE' && id) { url += `?id=eq.${id}`; }
+        try {
+            const res = await fetch(url, options);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            if (method === 'GET') return await res.json();
+            return { success: true };
+        } catch (e) {
+            console.warn('Supabase error:', e);
+            return { error: e.message };
+        }
+    },
+    async getUsers() { return await this.query('users'); },
+    async getTasks() { return await this.query('tasks'); },
+    async getAttendance() { return await this.query('attendance'); },
+    async getPatients() { return await this.query('patients'); },
+    async getStock() { return await this.query('stock'); },
+    async getSales() { return await this.query('sales'); },
+    async getExpenses() { return await this.query('expenses'); },
+    async getEvents() { return await this.query('events'); },
+    async getBonuses() { return await this.query('bonuses'); },
+    async getSalaryRequests() { return await this.query('salary_requests'); },
+    async getNotifications() { return await this.query('notifications'); },
+    async getWinner() { return await this.query('winner'); },
+    async getScrollingText() { return await this.query('scrolling_text'); },
+    async addUser(data) { return await this.query('users', 'POST', data); },
+    async addTask(data) { return await this.query('tasks', 'POST', data); },
+    async addAttendance(data) { return await this.query('attendance', 'POST', data); },
+    async addPatient(data) { return await this.query('patients', 'POST', data); },
+    async addStock(data) { return await this.query('stock', 'POST', data); },
+    async addSale(data) { return await this.query('sales', 'POST', data); },
+    async addExpense(data) { return await this.query('expenses', 'POST', data); },
+    async addEvent(data) { return await this.query('events', 'POST', data); },
+    async addBonus(data) { return await this.query('bonuses', 'POST', data); },
+    async addSalaryRequest(data) { return await this.query('salary_requests', 'POST', data); },
+    async addNotification(data) { return await this.query('notifications', 'POST', data); },
+    async updateTask(id, data) { return await this.query('tasks', 'PATCH', data, id); },
+    async updateUser(id, data) { return await this.query('users', 'PATCH', data, id); },
+    async updateStock(id, data) { return await this.query('stock', 'PATCH', data, id); },
+    async updateSalaryRequest(id, data) { return await this.query('salary_requests', 'PATCH', data, id); },
+    async updateNotification(id, data) { return await this.query('notifications', 'PATCH', data, id); },
+    async deleteTask(id) { return await this.query('tasks', 'DELETE', null, id); },
+    async deleteUser(id) { return await this.query('users', 'DELETE', null, id); },
+    async deletePatient(id) { return await this.query('patients', 'DELETE', null, id); },
+    async deleteStock(id) { return await this.query('stock', 'DELETE', null, id); },
+    async deleteExpense(id) { return await this.query('expenses', 'DELETE', null, id); },
+    async deleteEvent(id) { return await this.query('events', 'DELETE', null, id); }
+};
+
+// ====================================================================
+// HELPERS
+// ====================================================================
+function getTodayStr() {
+    const d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    const d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+}
+
+function showToast(text, type = '') {
+    const stack = document.getElementById('toastStack');
+    if (!stack) return;
+    const el = document.createElement('div');
+    el.className = 'toast' + (type ? ' ' + type : '');
+    el.textContent = text;
+    stack.appendChild(el);
+    setTimeout(() => {
+        el.style.opacity = '0';
+        el.style.transition = 'opacity 0.3s';
+        setTimeout(() => el.remove(), 300);
+    }, 5000);
+}
+
+function formatTime(seconds) {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
+    return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+}
+
+function getWorkHours(userId, date) {
+    const record = db.attendance.find(a => a.user_id === userId && a.date === date);
+    if (!record || !record.check_in) return 0;
+    const [h, m, s] = record.check_in.split(':').map(Number);
+    const start = new Date();
+    start.setHours(h, m, s || 0, 0);
+    const end = record.check_out ? new Date() : new Date();
+    if (record.check_out) {
+        const [h2, m2, s2] = record.check_out.split(':').map(Number);
+        end.setHours(h2, m2, s2 || 0, 0);
+    }
+    return (end - start) / 3600000;
+}
+
+// ====================================================================
+// SYNC QUEUE
+// ====================================================================
+function addToSyncQueue(action, data) {
+    if (!db.sync_pending) db.sync_pending = [];
+    db.sync_pending.push({ action, data, timestamp: Date.now() });
+    saveData();
+}
+
+async function processSyncQueue() {
+    if (!navigator.onLine) return;
+    const pending = db.sync_pending || [];
+    if (pending.length === 0) return;
+    for (const item of pending) {
+        try {
+            switch (item.action) {
+                case 'addUser': await supabase.addUser(item.data); break;
+                case 'addTask': await supabase.addTask(item.data); break;
+                case 'addAttendance': await supabase.addAttendance(item.data); break;
+                case 'addPatient': await supabase.addPatient(item.data); break;
+                case 'addStock': await supabase.addStock(item.data); break;
+                case 'addSale': await supabase.addSale(item.data); break;
+                case 'addExpense': await supabase.addExpense(item.data); break;
+                case 'addEvent': await supabase.addEvent(item.data); break;
+                case 'addBonus': await supabase.addBonus(item.data); break;
+                case 'addSalaryRequest': await supabase.addSalaryRequest(item.data); break;
+                case 'addNotification': await supabase.addNotification(item.data); break;
+            }
+        } catch(e) { console.warn('Sync failed:', item.action); }
+    }
+    db.sync_pending = [];
+    saveData();
+}
+
+// ====================================================================
+// LOGIN
+// ====================================================================
+async function handleLogin() {
+    const id = document.getElementById('loginId').value.trim();
+    const pass = document.getElementById('loginPass').value.trim();
+
+    if (!id || !pass) {
+        document.getElementById('loginError').textContent = 'Tafadhali jaza namba na nenosiri!';
+        document.getElementById('loginError').style.display = 'block';
+        return;
+    }
+
+    // Admin
+    if (id === ADMIN_ID && pass === ADMIN_PASS) {
+        if (!db.users.find(u => u.id === ADMIN_ID)) {
+            db.users.push({ id: ADMIN_ID, name: 'Admin', password: ADMIN_PASS, role: 'admin', phone: '0712345678', salary: 0, image: '' });
+            saveData();
+        }
+        currentUser = db.users.find(u => u.id === ADMIN_ID);
+        db.currentUser = currentUser;
+        saveData();
+        document.getElementById('loginError').style.display = 'none';
+        document.getElementById('loginPage').style.display = 'none';
+        document.getElementById('mainApp').style.display = 'block';
+        setupAppAfterLogin();
+        return;
+    }
+
+    // Local
+    let user = db.users.find(u => u.id === id && u.password === pass);
+    
+    if (!user && navigator.onLine) {
+        try {
+            const cloudUsers = await supabase.getUsers();
+            if (cloudUsers && !cloudUsers.error) {
+                cloudUsers.forEach(cu => {
+                    if (!db.users.find(u => u.id === cu.id)) {
+                        db.users.push(cu);
+                    }
+                });
+                saveData();
+                user = db.users.find(u => u.id === id && u.password === pass);
+            }
+        } catch(e) {}
+    }
+    
+    if (user) {
+        currentUser = user;
+        db.currentUser = currentUser;
+        saveData();
+        document.getElementById('loginError').style.display = 'none';
+        document.getElementById('loginPage').style.display = 'none';
+        document.getElementById('mainApp').style.display = 'block';
+        setupAppAfterLogin();
+    } else {
+        document.getElementById('loginError').textContent = 'Namba au nenosiri si sahihi!';
+        document.getElementById('loginError').style.display = 'block';
+    }
+}
+
+function toggleLoginPass() {
+    const input = document.getElementById('loginPass');
+    const icon = document.querySelector('.password-toggle i');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fa-regular fa-eye-slash';
+    } else {
+        input.type = 'password';
+        icon.className = 'fa-regular fa-eye';
+    }
+}
+
+function handleLogout() {
+    if (workTimerInterval) { clearInterval(workTimerInterval); workTimerInterval = null; }
+    currentUser = null;
+    db.currentUser = null;
+    saveData();
+    document.getElementById('mainApp').style.display = 'none';
+    document.getElementById('loginPage').style.display = 'flex';
+    document.getElementById('loginId').value = '';
+    document.getElementById('loginPass').value = '';
+    showToast('Umefanikiwa kutoka!', 'ok');
+}
+
+// ====================================================================
+// SETUP AFTER LOGIN
+// ====================================================================
+function setupAppAfterLogin() {
+    const isAdmin = currentUser && currentUser.id === ADMIN_ID;
+    document.getElementById('adminTab').style.display = isAdmin ? 'inline-flex' : 'none';
+    document.getElementById('aiTab').style.display = isAdmin ? 'inline-flex' : 'none';
+    document.getElementById('addExpenseBtn').style.display = isAdmin ? 'inline-block' : 'none';
+    document.getElementById('adminStockForm').style.display = isAdmin ? 'block' : 'none';
+    document.getElementById('allTasksContainer').style.display = isAdmin ? 'block' : 'none';
+    document.getElementById('addTaskBtn').style.display = isAdmin ? 'inline-block' : 'inline-block';
+
+    document.getElementById('userNameDisplay').textContent = currentUser.name;
+    document.getElementById('userIdDisplay').textContent = '(***)';
+    document.getElementById('userRoleDisplay').textContent = isAdmin ? 'Msimamizi' : 'Mfanyakazi';
+
+    renderAll();
+    showToast('Karibu ' + currentUser.name + '!', 'ok');
+    if (navigator.onLine) processSyncQueue();
+}
+
+// ====================================================================
+// NAVIGATION
+// ====================================================================
+function showPage(page) {
+    currentPage = page;
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    const target = document.getElementById('page-' + page);
+    if (target) target.classList.add('active');
+    const tabs = document.querySelectorAll('.nav-tab');
+    const pages = ['dashboard', 'tasks', 'attendance', 'performance', 'calendar', 'patients', 'stock', 'sales', 'expenses', 'salary', 'ai', 'admin'];
+    const index = pages.indexOf(page);
+    if (tabs[index]) tabs[index].classList.add('active');
+    renderPage(page);
+}
+
+function renderPage(page) {
+    switch (page) {
+        case 'dashboard': renderDashboard(); break;
+        case 'tasks': renderTasks(); break;
+        case 'attendance': renderAttendance(); break;
+        case 'performance': renderPerformance(); break;
+        case 'calendar': renderCalendar(); break;
+        case 'patients': renderPatients(); break;
+        case 'stock': renderStock(); break;
+        case 'sales': renderSales(); break;
+        case 'expenses': renderExpenses(); break;
+        case 'salary': renderSalaryPage(); break;
+        case 'admin': renderAdmin(); break;
+    }
+}
+
+// ====================================================================
+// RENDER: DASHBOARD
+// ====================================================================
+function renderDashboard() {
+    if (!currentUser) return;
+    renderStaffInfo();
+    
+    const userTasks = db.tasks.filter(t => t.user_id === currentUser.id);
+    const today = getTodayStr();
+    const todayTasks = userTasks.filter(t => t.date === today);
+    const done = todayTasks.filter(t => t.done).length;
+    const approved = todayTasks.filter(t => t.approved).length;
+    const total = todayTasks.length;
+    const pending = total - done;
+    const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+    
+    document.getElementById('statTasksTotal').textContent = total;
+    document.getElementById('statTasksDone').textContent = done;
+    document.getElementById('statTasksPending').textContent = pending;
+    document.getElementById('statPerformance').textContent = pct + '%';
+    
+    const greeting = document.getElementById('dashboardGreeting');
+    if (total === 0) greeting.textContent = '🎉 Hakuna majukumu leo!';
+    else if (done === total && approved === total) greeting.textContent = '🎉 Hongera! Majukumu yote yamekamilika!';
+    else if (done === total) greeting.textContent = '✅ Majukumu yote yamekamilika! Yanasubiri kuthibitishwa.';
+    else greeting.textContent = '📋 Una ' + pending + ' majukumu yaliyobaki.';
+    
+    const container = document.getElementById('dashboardTaskList');
+    if (todayTasks.length === 0) {
+        container.innerHTML = '<div class="task-list-empty">Hakuna majukumu ya leo.</div>';
+        return;
+    }
+    container.innerHTML = todayTasks.slice(0, 5).map(t => `
+        <div class="task-item ${t.done ? 'done' : ''}">
+            <div class="task-check ${t.done ? 'checked' : ''}" onclick="toggleTask('${t.id}')">${t.done ? '✓' : ''}</div>
+            <div class="task-info">
+                <div class="task-name">${escapeHtml(t.name)}</div>
+                <div class="task-meta">${t.priority === 'high' ? '🔴' : t.priority === 'medium' ? '🟡' : '🟢'} ${t.description || ''}</div>
+            </div>
+            <span class="task-status ${t.approved ? 'approved' : (t.done ? 'done' : 'pending')}">
+                ${t.approved ? '✅' : (t.done ? '⏳' : '⏳')}
+            </span>
+        </div>
+    `).join('');
+    
+    updateBonus3D();
+    updateScrollingTextDisplay();
+}
+
+// ====================================================================
+// RENDER: STAFF INFO
+// ====================================================================
+function renderStaffInfo() {
+    if (!currentUser) return;
+    document.getElementById('staffName').textContent = currentUser.name || '-';
+    document.getElementById('staffId').textContent = currentUser.id || '-';
+    document.getElementById('staffPhone').textContent = currentUser.phone || '-';
+    document.getElementById('staffSalary').textContent = 'TSh ' + (currentUser.salary || 0).toLocaleString();
+    
+    const today = getTodayStr();
+    const record = db.attendance.find(a => a.user_id === currentUser.id && a.date === today);
+    if (record) {
+        document.getElementById('staffCheckIn').textContent = record.check_in || '-';
+        document.getElementById('staffCheckOut').textContent = record.check_out || '-';
+        if (record.check_in) {
+            const hours = getWorkHours(currentUser.id, today);
+            document.getElementById('staffWorkTime').textContent = hours > 0 ? formatTime(hours * 3600) : '00:00:00';
+        }
+        let status = '⚪ Hajajihusisha';
+        if (record.check_in && !record.check_out) {
+            const hours = getWorkHours(currentUser.id, today);
+            if (hours >= 10) status = '✅ Saa 10 zimekamilika!';
+            else status = '🟢 Kajihusisha - Saa ' + hours.toFixed(1);
+        } else if (record.check_in && record.check_out) {
+            const hours = getWorkHours(currentUser.id, today);
+            if (hours >= 10) status = '✅ Amemaliza - Saa 10';
+            else status = '⚠️ Amemaliza - Saa ' + hours.toFixed(1);
+        }
+        document.getElementById('staffStatus').textContent = status;
+        if (record.check_in && !record.check_out) startWorkTimer(record.check_in);
+        else stopWorkTimer();
+    } else {
+        document.getElementById('staffCheckIn').textContent = '-';
+        document.getElementById('staffCheckOut').textContent = '-';
+        document.getElementById('staffWorkTime').textContent = '-';
+        document.getElementById('staffStatus').textContent = '⚪ Hajajihusisha';
+        stopWorkTimer();
+    }
+}
+
+// ====================================================================
+// TIMERS
+// ====================================================================
+function startWorkTimer(checkInTime) {
+    if (workTimerInterval) { clearInterval(workTimerInterval); workTimerInterval = null; }
+    if (!checkInTime) { document.getElementById('workTimerDisplay').textContent = '00:00:00'; return; }
+    const now = new Date();
+    const [h, m, s] = checkInTime.split(':').map(Number);
+    const start = new Date(now);
+    start.setHours(h, m, s || 0, 0);
+    workTimerInterval = setInterval(() => {
+        const current = new Date();
+        const diff = (current - start) / 1000;
+        if (diff > 0) {
+            const timerDisplay = document.getElementById('workTimerDisplay');
+            const hours = diff / 3600;
+            const statusEl = document.getElementById('workStatusDisplay');
+            if (hours >= 10) {
+                timerDisplay.style.color = 'var(--green)';
+                if (statusEl) { statusEl.textContent = '✅ Saa 10 zimekamilika!'; statusEl.style.color = 'var(--green)'; }
+            } else {
+                timerDisplay.style.color = 'var(--gold)';
+                if (statusEl) { statusEl.textContent = '⏳ Kazi inaendelea... Saa ' + hours.toFixed(1); statusEl.style.color = 'var(--gold)'; }
+            }
+            timerDisplay.textContent = formatTime(diff);
+        }
+    }, 1000);
+}
+
+function stopWorkTimer() {
+    if (workTimerInterval) { clearInterval(workTimerInterval); workTimerInterval = null; }
+    document.getElementById('workTimerDisplay').textContent = '00:00:00';
+    document.getElementById('workStatusDisplay').textContent = '⏳ Subiri kuingia';
+}
+
+// ====================================================================
+// RENDER: TASKS
+// ====================================================================
+function renderTasks() {
+    if (!currentUser) return;
+    document.getElementById('taskDateDisplay').textContent = new Date().toLocaleDateString('sw-TZ', {
+        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+    });
+    const userTasks = db.tasks.filter(t => t.user_id === currentUser.id);
+    const today = getTodayStr();
+    const todayTasks = userTasks.filter(t => t.date === today);
+    const container = document.getElementById('taskListContainer');
+    if (todayTasks.length === 0) {
+        container.innerHTML = '<div class="task-list-empty">Hakuna majukumu ya leo!</div>';
+        return;
+    }
+    container.innerHTML = todayTasks.map(t => `
+        <div class="task-item ${t.done ? 'done' : ''}">
+            <div class="task-check ${t.done ? 'checked' : ''}" onclick="toggleTask('${t.id}')">${t.done ? '✓' : ''}</div>
+            <div class="task-info">
+                <div class="task-name">${escapeHtml(t.name)}</div>
+                <div class="task-meta">${t.priority === 'high' ? '🔴 Juu' : t.priority === 'medium' ? '🟡 Kati' : '🟢 Chini'} ${t.description ? '· ' + escapeHtml(t.description) : ''}</div>
+            </div>
+            <span class="task-status ${t.approved ? 'approved' : (t.done ? 'done' : 'pending')}">
+                ${t.approved ? '✅' : (t.done ? '⏳ Inasubiri' : '⏳')}
+            </span>
+            ${currentUser.role === 'admin' && !t.approved && t.done ? `<button class="btn-edit btn-sm" onclick="approveTask('${t.id}')">Thibitisha</button>` : ''}
+        </div>
+    `).join('');
+    
+    if (currentUser.role === 'admin') {
+        const allTasks = db.tasks.filter(t => t.date === today);
+        const allContainer = document.getElementById('allTasksList');
+        if (allTasks.length > 0) {
+            allContainer.innerHTML = allTasks.map(t => {
+                const user = db.users.find(u => u.id === t.user_id);
+                return `
+                    <div class="task-item ${t.done ? 'done' : ''}" style="margin-bottom:4px;padding:8px 12px;">
+                        <div class="task-info">
+                            <div class="task-name" style="font-size:13px;">${escapeHtml(t.name)} (${user ? user.name : t.user_id})</div>
+                            <div class="task-meta">${t.priority === 'high' ? '🔴' : t.priority === 'medium' ? '🟡' : '🟢'} ${t.description || ''}</div>
+                        </div>
+                        <span class="task-status ${t.approved ? 'approved' : (t.done ? 'done' : 'pending')}">
+                            ${t.approved ? '✅' : (t.done ? '⏳' : '⏳')}
+                        </span>
+                    </div>
+                `;
+            }).join('');
+        } else {
+            allContainer.innerHTML = '<div class="task-list-empty">Hakuna majukumu kwa wafanyakazi wote.</div>';
+        }
+    }
+}
+
+// ====================================================================
+// RENDER: ATTENDANCE
+// ====================================================================
+function renderAttendance() {
+    if (!currentUser) return;
+    renderStaffInfo();
+    const picker = document.getElementById('attendanceDatePicker');
+    const today = getTodayStr();
+    if (!picker.value) picker.value = today;
+    const selectedDate = picker.value || today;
+    const record = db.attendance.find(a => a.user_id === currentUser.id && a.date === selectedDate);
+    
+    if (record) {
+        document.getElementById('checkInTime').textContent = record.check_in || '--:--:--';
+        document.getElementById('checkOutTime').textContent = record.check_out || '--:--:--';
+        document.getElementById('checkInStatus').textContent = record.check_in ? '✅ Imeingia' : 'Bado';
+        document.getElementById('checkInStatus').className = 'status-badge ' + (record.check_in ? 'in' : 'pending');
+        document.getElementById('checkOutStatus').textContent = record.check_out ? '✅ Imetoka' : 'Bado';
+        document.getElementById('checkOutStatus').className = 'status-badge ' + (record.check_out ? 'out' : 'pending');
+        document.getElementById('checkInBtn').disabled = !!record.check_in;
+        document.getElementById('checkOutBtn').disabled = !record.check_in || !!record.check_out;
+        if (selectedDate === today && record.check_in && !record.check_out) startWorkTimer(record.check_in);
+        else stopWorkTimer();
+    } else {
+        document.getElementById('checkInTime').textContent = '--:--:--';
+        document.getElementById('checkOutTime').textContent = '--:--:--';
+        document.getElementById('checkInStatus').textContent = 'Bado';
+        document.getElementById('checkInStatus').className = 'status-badge pending';
+        document.getElementById('checkOutStatus').textContent = 'Bado';
+        document.getElementById('checkOutStatus').className = 'status-badge pending';
+        document.getElementById('checkInBtn').disabled = false;
+        document.getElementById('checkOutBtn').disabled = true;
+        stopWorkTimer();
+    }
+    
+    const historyContainer = document.getElementById('attendanceHistory');
+    const userRecords = db.attendance.filter(a => a.user_id === currentUser.id).sort((a, b) => b.date.localeCompare(a.date));
+    if (userRecords.length === 0) {
+        historyContainer.innerHTML = '<div class="task-list-empty">Hakuna rekodi.</div>';
+    } else {
+        historyContainer.innerHTML = userRecords.slice(0, 20).map(a => {
+            const hours = getWorkHours(currentUser.id, a.date);
+            return `
+                <div class="task-item" style="margin-bottom:4px;padding:8px 12px;">
+                    <div class="task-info">
+                        <div class="task-name">${a.date}</div>
+                        <div class="task-meta">🟢 ${a.check_in || '--:--'} ${a.check_out ? '🔴 ' + a.check_out : '⚠️ Hajatoka'} · Saa: ${hours.toFixed(1)}</div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+    
+    renderAllStaffAttendance();
+}
+
+function renderAllStaffAttendance() {
+    const container = document.getElementById('allStaffAttendance');
+    if (!container || !currentUser || currentUser.role !== 'admin') {
+        if (container) container.innerHTML = '';
+        return;
+    }
+    const today = getTodayStr();
+    const staff = db.users.filter(u => u.id !== ADMIN_ID);
+    if (staff.length === 0) {
+        container.innerHTML = '<div class="task-list-empty">Hakuna wafanyakazi.</div>';
+        return;
+    }
+    let html = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">';
+    staff.forEach(u => {
+        const record = db.attendance.find(a => a.user_id === u.id && a.date === today);
+        const hours = record ? getWorkHours(u.id, today) : 0;
+        let statusText = '❌ Hajaingia';
+        let statusClass = 'absent';
+        if (record && record.check_in) {
+            if (hours >= 10) { statusText = '✅ Kamili'; statusClass = 'present'; }
+            else if (record.check_out) { statusText = '⚠️ ' + hours.toFixed(1) + 'h'; statusClass = 'late'; }
+            else { statusText = '🟢 Inaendelea'; statusClass = 'present'; }
+        }
+        html += `
+            <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--panel-2);border-radius:8px;">
+                <span style="font-weight:500;font-size:13px;">${escapeHtml(u.name || u.id)}</span>
+                <span style="font-size:12px;padding:2px 12px;border-radius:999px;font-weight:600;background:${statusClass === 'present' ? 'var(--green-soft)' : statusClass === 'late' ? 'var(--orange-soft)' : 'var(--red-soft)'};color:${statusClass === 'present' ? 'var(--green)' : statusClass === 'late' ? 'var(--orange)' : 'var(--red)'};">${statusText}</span>
+            </div>
+        `;
+    });
+    html += '</div>';
+    container.innerHTML = html;
+}
+
+// ====================================================================
+// RENDER: PERFORMANCE
+// ====================================================================
+function renderPerformance() {
+    if (!currentUser) return;
+    const userTasks = db.tasks.filter(t => t.user_id === currentUser.id);
+    const today = getTodayStr();
+    const todayTasks = userTasks.filter(t => t.date === today);
+    const done = todayTasks.filter(t => t.done).length;
+    const total = todayTasks.length;
+    const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+    document.getElementById('performanceValue').textContent = pct + '%';
+    document.getElementById('performanceMessage').textContent = total === 0 ? 'Hakuna majukumu.' : 'Umekamilisha ' + done + '/' + total;
+    
+    const monthStart = today.slice(0, 7);
+    const monthTasks = userTasks.filter(t => t.date.startsWith(monthStart));
+    const monthDone = monthTasks.filter(t => t.done).length;
+    const monthTotal = monthTasks.length;
+    const monthPct = monthTotal > 0 ? Math.round((monthDone / monthTotal) * 100) : 0;
+    document.getElementById('monthlyPerformance').innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:13px;color:var(--text-dim);">Mwezi huu: <strong style="color:var(--gold);">${monthDone}/${monthTotal}</strong> (${monthPct}%)</span>
+        </div>
+    `;
+    
+    const bonusContainer = document.getElementById('bonusDisplay');
+    const userBonuses = db.bonuses ? db.bonuses.filter(b => b.user_id === currentUser.id) : [];
+    if (userBonuses.length === 0) {
+        bonusContainer.innerHTML = '<div class="task-list-empty">Hakuna bonus.</div>';
+    } else {
+        const totalBonus = userBonuses.reduce((sum, b) => sum + (b.amount || 0), 0);
+        bonusContainer.innerHTML = `
+            <div style="color:var(--gold);font-weight:600;">🏆 Jumla: TSh ${totalBonus.toLocaleString()}</div>
+            ${userBonuses.slice(0, 5).map(b => `
+                <div class="task-item" style="margin-top:4px;padding:6px 10px;">
+                    <div class="task-info">
+                        <div class="task-name" style="font-size:13px;">${escapeHtml(b.reason || 'Bonus')}</div>
+                        <div class="task-meta">${b.date || ''}</div>
+                    </div>
+                    <span style="color:var(--gold);font-weight:600;">TSh ${(b.amount || 0).toLocaleString()}</span>
+                </div>
+            `).join('')}
+        `;
+    }
+}
+
+// ====================================================================
+// RENDER: CALENDAR
+// ====================================================================
+function renderCalendar() {
+    if (!currentUser) return;
+    const monthNames = ['Januari', 'Februari', 'Machi', 'Aprili', 'Mei', 'Juni', 'Juli', 'Agosti', 'Septemba', 'Oktoba', 'Novemba', 'Desemba'];
+    document.getElementById('calendarMonthYear').textContent = monthNames[calendarMonth] + ' ' + calendarYear;
+    const firstDay = new Date(calendarYear, calendarMonth, 1).getDay();
+    const daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate();
+    const today = getTodayStr();
+    const grid = document.getElementById('calendarGrid');
+    let html = '';
+    const dayLabels = ['J2', 'J3', 'J4', 'J5', 'J6', 'J7', 'J1'];
+    dayLabels.forEach(label => { html += `<div class="day" style="font-weight:600;color:var(--text-dim);font-size:9px;">${label}</div>`; });
+    for (let i = 0; i < firstDay; i++) { html += `<div class="day"></div>`; }
+    const userTasks = db.tasks.filter(t => t.user_id === currentUser.id);
+    const taskDates = new Set(userTasks.map(t => t.date));
+    const eventDates = new Set((db.events || []).map(e => e.date));
+    const attendanceDates = new Set(db.attendance.filter(a => a.user_id === currentUser.id && a.check_in).map(a => a.date));
+    for (let d = 1; d <= daysInMonth; d++) {
+        const dateStr = calendarYear + '-' + String(calendarMonth + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+        let classes = '';
+        let badges = '';
+        if (taskDates.has(dateStr)) { classes += ' has-task'; badges += '<div class="day-badge">●</div>'; }
+        if (eventDates.has(dateStr)) { classes += ' has-event'; badges += '<div class="day-badge" style="color:var(--red);">🔴</div>'; }
+        if (attendanceDates.has(dateStr)) { badges += '<div class="day-badge" style="color:var(--green);">✓</div>'; }
+        if (dateStr === today) classes += ' today';
+        html += `
+            <div class="day${classes}" onclick="${(taskDates.has(dateStr) || eventDates.has(dateStr)) ? `showDayDetails('${dateStr}')` : ''}">
+                <div class="day-num">${d}</div>
+                ${badges}
+            </div>
+        `;
+    }
+    grid.innerHTML = html;
+    showDayDetails(today);
+}
+
+function showDayDetails(dateStr) {
+    const container = document.getElementById('calendarTaskList');
+    const tasks = db.tasks.filter(t => t.user_id === currentUser.id && t.date === dateStr);
+    const events = (db.events || []).filter(e => e.date === dateStr);
+    let html = '';
+    if (tasks.length === 0 && events.length === 0) {
+        html = '<div class="task-list-empty">Hakuna majukumu au matukio.</div>';
+    } else {
+        tasks.forEach(t => {
+            html += `
+                <div class="task-item ${t.done ? 'done' : ''}" style="margin-bottom:4px;padding:8px 12px;">
+                    <div class="task-check ${t.done ? 'checked' : ''}" onclick="toggleTask('${t.id}')">${t.done ? '✓' : ''}</div>
+                    <div class="task-info">
+                        <div class="task-name" style="font-size:13px;">${escapeHtml(t.name)}</div>
+                        <div class="task-meta">${t.priority === 'high' ? '🔴' : t.priority === 'medium' ? '🟡' : '🟢'} ${t.description || ''}</div>
+                    </div>
+                </div>
+            `;
+        });
+        events.forEach(e => {
+            html += `
+                <div class="task-item" style="border-left:3px solid var(--red);">
+                    <div class="task-info">
+                        <div class="task-name" style="font-size:13px;">🔴 ${escapeHtml(e.title)}</div>
+                        <div class="task-meta">${escapeHtml(e.description || '')}</div>
+                    </div>
+                </div>
+            `;
+        });
+    }
+    container.innerHTML = html;
+}
+
+function changeMonth(delta) {
+    calendarMonth += delta;
+    if (calendarMonth < 0) { calendarMonth = 11; calendarYear--; }
+    if (calendarMonth > 11) { calendarMonth = 0; calendarYear++; }
+    renderCalendar();
+}
+
+// ====================================================================
+// RENDER: PATIENTS
+// ====================================================================
+function renderPatients() {
+    const tbody = document.getElementById('patientTableBody');
+    if (!tbody) return;
+    const patients = db.patients ? db.patients.sort((a, b) => (a.date || '').localeCompare(b.date || '')) : [];
+    const total = patients.length;
+    const taken = patients.filter(p => p.taken).length;
+    const notTaken = total - taken;
+    document.getElementById('patientTotalCount').textContent = total;
+    document.getElementById('patientTakenCount').textContent = taken;
+    document.getElementById('patientNotTakenCount').textContent = notTaken;
+    
+    if (patients.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--text-faint);">Hakuna wagonjwa.</td></tr>`;
+        return;
+    }
+    tbody.innerHTML = patients.map((p, index) => `
+        <tr>
+            <td>${index + 1}</td>
+            <td><strong>${escapeHtml(p.name || '')}</strong></td>
+            <td>${escapeHtml(p.phone || '')}</td>
+            <td>${escapeHtml(p.address || '')}</td>
+            <td style="font-size:12px;color:var(--text-dim);">${escapeHtml(p.notes || '')}</td>
+            <td><span class="${p.taken ? 'status-taken' : 'status-not-taken'}">${p.taken ? '✅ Amechukua' : '❌ Hajachukua'}</span></td>
+            <td style="font-size:12px;color:var(--text-faint);">${p.date || ''}</td>
+            <td>
+                <div class="action-btns">
+                    <button class="btn-edit btn-sm" onclick="togglePatientTaken('${p.id}')">${p.taken ? 'Ondoa' : 'Chukua'}</button>
+                    ${currentUser && currentUser.role === 'admin' ? `<button class="btn-danger btn-sm" onclick="deletePatient('${p.id}')">Futa</button>` : ''}
+                </div>
+            </td>
+        </tr>
+    `).join('');
+}
+
+// ====================================================================
+// RENDER: STOCK
+// ====================================================================
+function renderStock() {
+    const tbody = document.getElementById('stockTableBody');
+    if (!tbody) return;
+    const stock = db.stock || [];
+    if (stock.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:30px;color:var(--text-faint);">Hakuna stock.</td></tr>`;
+        return;
+    }
+    let totalValue = 0;
+    tbody.innerHTML = stock.map((item, index) => {
+        const total = (item.qty || 0) * (item.price || 0);
+        totalValue += total;
+        return `
+            <tr>
+                <td>${index + 1}</td>
+                <td><strong>${escapeHtml(item.name)}</strong> <span style="font-size:11px;color:var(--text-dim);">${escapeHtml(item.description || '')}</span></td>
+                <td style="text-align:center;font-weight:700;color:var(--gold);">${item.qty || 0}</td>
+                <td style="text-align:right;">TSh ${(item.price || 0).toLocaleString()}</td>
+                <td style="text-align:right;font-weight:600;color:var(--green);">TSh ${total.toLocaleString()}</td>
+            </tr>
+        `;
+    }).join('');
+    tbody.innerHTML += `
+        <tr style="background:var(--panel-2);font-weight:700;border-top:2px solid var(--gold);">
+            <td colspan="4" style="text-align:right;color:var(--gold);">JUMLA:</td>
+            <td style="text-align:right;color:var(--gold);">TSh ${totalValue.toLocaleString()}</td>
+        </tr>
+    `;
+}
+
+// ====================================================================
+// RENDER: SALES
+// ====================================================================
+function renderSales() {
+    const container = document.getElementById('salesHistory');
+    const sales = db.sales ? db.sales.sort((a, b) => b.date.localeCompare(a.date)) : [];
+    if (sales.length === 0) {
+        container.innerHTML = '<div class="task-list-empty">Hakuna mauzo.</div>';
+        return;
+    }
+    const allItems = db.stock || [];
+    container.innerHTML = sales.slice(0, 30).map(s => {
+        const item = allItems.find(d => d.id === s.drug_id);
+        return `
+            <div class="sale-item">
+                <div class="sale-product">${item ? escapeHtml(item.name) : 'Bidhaa'}</div>
+                <div class="sale-detail">
+                    Idadi: ${s.qty || 0} · Jumla: TSh ${((s.qty || 0) * (s.price || 0)).toLocaleString()}
+                    ${s.description ? '· ' + escapeHtml(s.description) : ''}
+                </div>
+                <div style="font-size:11px;color:var(--text-faint);">${s.date || ''}</div>
+            </div>
+        `;
+    }).join('');
+}
+
+// ====================================================================
+// RENDER: EXPENSES
+// ====================================================================
+function renderExpenses() {
+    const container = document.getElementById('expensesContainer');
+    const expenses = db.expenses ? db.expenses.sort((a, b) => b.date.localeCompare(a.date)) : [];
+    if (expenses.length === 0) {
+        container.innerHTML = '<div class="task-list-empty">Hakuna matumizi.</div>';
+    } else {
+        container.innerHTML = expenses.slice(0, 30).map(e => `
+            <div class="task-item" style="border-left:3px solid var(--red);">
+                <div class="task-info">
+                    <div class="task-name">${escapeHtml(e.name || 'Matumizi')}</div>
+                    <div class="task-meta">TSh ${(e.amount || 0).toLocaleString()} · ${e.date || ''}</div>
+                </div>
+                ${currentUser && currentUser.role === 'admin' ? `<button class="btn-danger btn-sm" onclick="deleteExpense('${e.id}')">Futa</button>` : ''}
+            </div>
+        `).join('');
+    }
+    const totalExpenses = expenses.reduce((sum, e) => sum + (e.amount || 0), 0);
+    document.getElementById('expenseSummary').innerHTML = `
+        <div style="padding:10px;background:var(--panel-2);border-radius:8px;text-align:center;font-size:18px;font-weight:700;color:var(--red);">
+            Jumla: TSh ${totalExpenses.toLocaleString()}
+        </div>
+    `;
+}
+
+// ====================================================================
+// RENDER: SALARY PAGE
+// ====================================================================
+function renderSalaryPage() {
+    if (!currentUser) return;
+    const salary = currentUser.salary || 0;
+    document.getElementById('mySalaryAmount').textContent = 'TSh ' + salary.toLocaleString();
+    
+    const requests = db.salary_requests ? db.salary_requests.filter(r => r.user_id === currentUser.id) : [];
+    const container = document.getElementById('salaryRequestsHistory');
+    if (requests.length === 0) {
+        container.innerHTML = '<div class="task-list-empty">Hakuna maombi.</div>';
+    } else {
+        container.innerHTML = requests.slice(0, 20).map(r => `
+            <div class="task-item" style="border-left:3px solid ${r.status === 'approved' ? 'var(--green)' : r.status === 'denied' ? 'var(--red)' : 'var(--gold)'};">
+                <div class="task-info">
+                    <div class="task-name">TSh ${(r.amount || 0).toLocaleString()}</div>
+                    <div class="task-meta">${r.date || ''} · 
+                        <span style="color:${r.status === 'approved' ? 'var(--green)' : r.status === 'denied' ? 'var(--red)' : 'var(--gold)'};">
+                            ${r.status === 'approved' ? '✅ Imekubaliwa' : r.status === 'denied' ? '❌ Imekataliwa' : '⏳ Inasubiri'}
+                        </span>
+                        ${r.signature ? '✍️ ' + escapeHtml(r.signature) : ''}
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+}
+
+// ====================================================================
+// RENDER: ADMIN
+// ====================================================================
+function renderAdmin() {
+    if (!currentUser || currentUser.id !== ADMIN_ID) return;
+    
+    const container = document.getElementById('adminUserList');
+    const staff = db.users.filter(u => u.id !== ADMIN_ID);
+    if (staff.length === 0) {
+        container.innerHTML = '<div class="task-list-empty">Hakuna wafanyakazi.</div>';
+    } else {
+        container.innerHTML = staff.map(u => `
+            <div class="admin-user-card">
+                <div class="user-info">
+                    <div class="name">${escapeHtml(u.name || u.id)} 
+                        <span style="font-size:11px;color:var(--text-dim);">Mshahara: TSh ${(u.salary || 0).toLocaleString()}</span>
+                    </div>
+                    <div class="role">ID: ${u.id || ''} · Simu: ${u.phone || '-'}</div>
+                </div>
+                <div class="user-actions">
+                    <button class="btn-danger btn-sm" onclick="deleteUser('${u.id}')">Futa</button>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    populateAdminSelects();
+    renderApproveTasks();
+    renderSalaryRequests();
+}
+
+function populateAdminSelects() {
+    if (!currentUser || currentUser.id !== ADMIN_ID) return;
+    const staff = db.users.filter(u => u.id !== ADMIN_ID);
+    const selects = ['adminTaskUser', 'adminBonusUser', 'adminWinnerUser'];
+    selects.forEach(id => {
+        const select = document.getElementById(id);
+        if (!select) return;
+        select.innerHTML = staff.map(u => `<option value="${u.id}">${u.name || u.id}</option>`).join('') || '<option value="">Hakuna</option>';
+    });
+    document.getElementById('adminTaskDate').value = getTodayStr();
+}
+
+function renderApproveTasks() {
+    const container = document.getElementById('adminApproveTasks');
+    if (!container) return;
+    const pending = db.tasks.filter(t => t.done && !t.approved);
+    if (pending.length === 0) {
+        container.innerHTML = '<div class="task-list-empty">Hakuna majukumu yanayosubiri.</div>';
+        return;
+    }
+    container.innerHTML = pending.map(t => {
+        const user = db.users.find(u => u.id === t.user_id);
+        return `
+            <div class="task-item" style="border-left:3px solid var(--gold);">
+                <div class="task-info">
+                    <div class="task-name">${escapeHtml(t.name)}</div>
+                    <div class="task-meta">👤 ${user ? user.name : t.user_id} · ${t.date}</div>
+                </div>
+                <button class="btn-edit btn-sm" onclick="approveTask('${t.id}')">Thibitisha</button>
+            </div>
+        `;
+    }).join('');
+}
+
+// ====================================================================
+// SALARY REQUESTS WITH SIGNATURE
+// ====================================================================
+function renderSalaryRequests() {
+    const container = document.getElementById('adminSalaryRequests');
+    if (!container) return;
+    if (!currentUser || currentUser.id !== ADMIN_ID) {
+        container.innerHTML = '';
+        return;
+    }
+    const requests = db.salary_requests ? db.salary_requests.filter(r => r.status === 'pending') : [];
+    if (requests.length === 0) {
+        container.innerHTML = '<div class="task-list-empty">✅ Hakuna maombi ya mshahara yanayosubiri.</div>';
+        return;
+    }
+    container.innerHTML = requests.map(r => {
+        const user = db.users.find(u => u.id === r.user_id);
+        return `
+            <div class="task-item" style="border-left:3px solid var(--gold);padding:12px 16px;">
+                <div class="task-info">
+                    <div class="task-name" style="font-size:15px;">
+                        ${user ? escapeHtml(user.name) : r.user_id} 
+                        <span style="color:var(--gold);font-weight:700;">TSh ${(r.amount || 0).toLocaleString()}</span>
+                    </div>
+                    <div class="task-meta">
+                        📅 ${r.date || ''} 
+                        ${r.note ? '· 📝 ' + escapeHtml(r.note) : ''}
+                        <span style="display:block;font-size:11px;color:var(--text-faint);margin-top:2px;">
+                            Mshahara wa sasa: TSh ${(user ? user.salary : 0).toLocaleString()}
+                        </span>
+                    </div>
+                </div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                    <button class="btn-green btn-sm" onclick="openSignatureModal('${r.id}')">
+                        <i class="fa-solid fa-pen"></i> Sahihi & Kubali
+                    </button>
+                    <button class="btn-danger btn-sm" onclick="handleSalaryRequest('${r.id}', 'denied')">
+                        <i class="fa-solid fa-times"></i> Kataa
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// ====================================================================
+// SIGNATURE MODAL
+// ====================================================================
+function openSignatureModal(requestId) {
+    pendingSalaryRequestId = requestId;
+    document.getElementById('adminSignatureInput').value = '';
+    document.getElementById('sigPreviewText').textContent = '-';
+    document.getElementById('sigPreviewDate').textContent = '';
+    openModal('signatureModal');
+    
+    // Live preview
+    document.getElementById('adminSignatureInput').addEventListener('input', function() {
+        const val = this.value.trim();
+        document.getElementById('sigPreviewText').textContent = val || '-';
+        document.getElementById('sigPreviewDate').textContent = val ? new Date().toLocaleString('sw-TZ') : '';
+    });
+}
+
+function confirmSignature() {
+    const signature = document.getElementById('adminSignatureInput').value.trim();
+    if (!signature) {
+        showToast('Tafadhali andika jina lako kama signature!', 'warn');
+        return;
+    }
+    if (signature.length < 2) {
+        showToast('Jina lazima liwe na herufi angalau 2!', 'warn');
+        return;
+    }
+    
+    if (!pendingSalaryRequestId) {
+        showToast('Hitilafu: Hakuna ombi lililochaguliwa!', 'warn');
+        return;
+    }
+    
+    // Process the salary request with signature
+    handleSalaryRequestWithSignature(pendingSalaryRequestId, signature);
+}
+
+async function handleSalaryRequestWithSignature(requestId, signature) {
+    if (!currentUser || currentUser.id !== ADMIN_ID) {
+        showToast('Sehemu hii ni ya Admin!', 'warn');
+        return;
+    }
+    
+    const request = db.salary_requests.find(r => r.id === requestId);
+    if (!request) { showToast('Ombi halipatikani!', 'warn'); return; }
+    
+    // Pata mfanyakazi
+    const user = db.users.find(u => u.id === request.user_id);
+    if (!user) { showToast('Mfanyakazi hapatikani!', 'warn'); return; }
+    
+    // Hakikisha mshahara wa kutosha
+    if ((user.salary || 0) < request.amount) {
+        showToast('Mshahara wa ' + user.name + ' hautoshi!', 'warn');
+        return;
+    }
+    
+    // =============================================================
+    // PUNGUSHA MSHAHARA WA MFANYAKAZI AUTOMATICALLY
+    // =============================================================
+    const newSalary = (user.salary || 0) - request.amount;
+    user.salary = newSalary;
+    
+    // Hifadhi mabadiliko
+    await supabase.updateUser(user.id, { salary: newSalary });
+    
+    // Badilisha hali ya ombi
+    request.status = 'approved';
+    request.signature = signature;
+    request.approved_at = new Date().toISOString();
+    request.approved_by = currentUser.name;
+    
+    await supabase.updateSalaryRequest(requestId, { 
+        status: 'approved', 
+        signature: signature,
+        approved_at: new Date().toISOString(),
+        approved_by: currentUser.name
+    });
+    
+    // Ongeza notification kwa mfanyakazi
+    const notification = {
+        id: 'n' + Date.now() + Math.random().toString(36).substr(2, 4),
+        user_id: user.id,
+        title: '✅ Ombi la Mshahara Limekubaliwa',
+        message: `Ombi la TSh ${request.amount.toLocaleString()} limekubaliwa. Mshahara uliobaki: TSh ${newSalary.toLocaleString()}`,
+        type: 'salary_response',
+        related_id: requestId,
+        read: false,
+        date: getTodayStr()
+    };
+    if (!db.notifications) db.notifications = [];
+    db.notifications.push(notification);
+    addToSyncQueue('addNotification', notification);
+    
+    saveData();
+    
+    // Funga modal
+    closeModal('signatureModal');
+    pendingSalaryRequestId = null;
+    
+    // Re-render
+    renderAll();
+    
+    showToast(`✅ Ombi la TSh ${request.amount.toLocaleString()} limekubaliwa! Mshahara wa ${user.name} umepunguzwa.`, 'ok');
+    showToast(`✍️ Sahihi: ${signature}`, 'ok');
+    
+    // Ikiwa mtandao upo, sawazisha
+    if (navigator.onLine) {
+        await processSyncQueue();
+    }
+}
+
+// ====================================================================
+// SALARY REQUEST - MFANYAKAZI
+// ====================================================================
+function requestSalary() {
+    if (!currentUser) return;
+    const amount = parseInt(document.getElementById('salaryRequestAmount').value);
+    const note = document.getElementById('salaryRequestNote').value.trim();
+    
+    if (!amount || amount <= 0) { showToast('Weka kiasi sahihi.', 'warn'); return; }
+    const salary = currentUser.salary || 0;
+    if (amount > salary) { 
+        showToast('Kiasi kinachozidi mshahara wako! Una TSh ' + salary.toLocaleString(), 'warn'); 
+        return;
+    }
+    
+    const request = {
+        id: 'sr' + Date.now() + Math.random().toString(36).substr(2, 4),
+        user_id: currentUser.id,
+        user_name: currentUser.name,
+        amount: amount,
+        note: note || '',
+        date: getTodayStr(),
+        status: 'pending',
+        signature: null,
+        approved_at: null,
+        approved_by: null
+    };
+    
+    if (!db.salary_requests) db.salary_requests = [];
+    db.salary_requests.push(request);
+    saveData();
+    addToSyncQueue('addSalaryRequest', request);
+    
+    // Notification kwa Admin
+    const adminNotif = {
+        id: 'n' + Date.now() + Math.random().toString(36).substr(2, 4),
+        user_id: ADMIN_ID,
+        title: '📩 Ombi Jipya la Mshahara',
+        message: `${currentUser.name} anaomba TSh ${amount.toLocaleString()}`,
+        type: 'salary_request',
+        related_id: request.id,
+        read: false,
+        date: getTodayStr()
+    };
+    if (!db.notifications) db.notifications = [];
+    db.notifications.push(adminNotif);
+    addToSyncQueue('addNotification', adminNotif);
+    
+    saveData();
+    
+    document.getElementById('salaryRequestAmount').value = '';
+    document.getElementById('salaryRequestNote').value = '';
+    renderSalaryPage();
+    updateNotifications();
+    
+    showToast('✅ Ombi lako limetumwa kwa Admin!', 'ok');
+}
+
+async function handleSalaryRequest(requestId, status) {
+    if (!currentUser || currentUser.id !== ADMIN_ID) {
+        showToast('Sehemu hii ni ya Admin!', 'warn');
+        return;
+    }
+    const request = db.salary_requests.find(r => r.id === requestId);
+    if (!request) return;
+    
+    if (status === 'denied') {
+        request.status = 'denied';
+        await supabase.updateSalaryRequest(requestId, { status: 'denied' });
+        saveData();
+        renderSalaryRequests();
+        showToast('❌ Ombi limekataliwa!', 'warn');
+    }
+}
+
+// ====================================================================
+// TASK OPERATIONS
+// ====================================================================
+async function toggleTask(taskId) {
+    const task = db.tasks.find(t => t.id === taskId);
+    if (!task) return;
+    task.done = !task.done;
+    if (!task.done) task.approved = false;
+    await supabase.updateTask(taskId, { done: task.done, approved: task.approved });
+    saveData();
+    renderAll();
+}
+
+async function approveTask(taskId) {
+    const task = db.tasks.find(t => t.id === taskId);
+    if (!task) return;
+    task.approved = true;
+    await supabase.updateTask(taskId, { approved: true });
+    saveData();
+    renderAll();
+    showToast('✅ Kazi imethibitishwa!', 'ok');
+}
+
+async function confirmAddTask() {
+    if (!currentUser) return;
+    const name = document.getElementById('taskNameInput').value.trim();
+    const desc = document.getElementById('taskDescInput').value.trim();
+    const date = document.getElementById('taskDateInput').value;
+    const priority = document.getElementById('taskPriorityInput').value;
+    if (!name) { showToast('Andika jina la kazi', 'warn'); return; }
+    const task = {
+        id: 't' + Date.now() + Math.random().toString(36).substr(2, 4),
+        user_id: currentUser.id,
+        name,
+        description: desc || '',
+        date: date || getTodayStr(),
+        priority: priority || 'medium',
+        done: false,
+        approved: false
+    };
+    db.tasks.push(task);
+    saveData();
+    addToSyncQueue('addTask', task);
+    closeModal('newTaskModal');
+    document.getElementById('taskNameInput').value = '';
+    document.getElementById('taskDescInput').value = '';
+    renderAll();
+    showToast('✅ Kazi imeongezwa!', 'ok');
+}
+
+// ====================================================================
+// ATTENDANCE OPERATIONS
+// ====================================================================
+async function handleCheckIn() {
+    if (!currentUser) return;
+    const picker = document.getElementById('attendanceDatePicker');
+    const today = getTodayStr();
+    const selectedDate = picker.value || today;
+    if (selectedDate > today) { showToast('Huwezi kuingia tarehe ya baadaye!', 'warn'); return; }
+    const now = new Date();
+    const timeStr = now.toTimeString().slice(0, 8);
+    let record = db.attendance.find(a => a.user_id === currentUser.id && a.date === selectedDate);
+    if (record && record.check_in) { showToast('Tayari umeingia!', 'warn'); return; }
+    const data = { user_id: currentUser.id, date: selectedDate, check_in: timeStr, check_out: null };
+    if (record) {
+        await supabase.query('attendance', 'PATCH', { check_in: timeStr, check_out: null }, record.id);
+        record.check_in = timeStr;
+        record.check_out = null;
+    } else {
+        db.attendance.push(data);
+        addToSyncQueue('addAttendance', data);
+    }
+    saveData();
+    renderAll();
+    showToast(`✅ Umeingia saa ${timeStr}`, 'ok');
+}
+
+async function handleCheckOut() {
+    if (!currentUser) return;
+    const picker = document.getElementById('attendanceDatePicker');
+    const today = getTodayStr();
+    const selectedDate = picker.value || today;
+    if (selectedDate > today) { showToast('Huwezi kutoka tarehe ya baadaye!', 'warn'); return; }
+    const record = db.attendance.find(a => a.user_id === currentUser.id && a.date === selectedDate);
+    if (!record || !record.check_in) { showToast('Haujaingia!', 'warn'); return; }
+    if (record.check_out) { showToast('Tayari umetoka!', 'warn'); return; }
+    const now = new Date();
+    const timeStr = now.toTimeString().slice(0, 8);
+    const hours = getWorkHours(currentUser.id, selectedDate);
+    if (hours < 1.67 && selectedDate === today) {
+        showToast('⚠️ Huwezi kutoka! Saa ' + hours.toFixed(1) + ' tu.', 'warn');
+        return;
+    }
+    await supabase.query('attendance', 'PATCH', { check_out: timeStr }, record.id);
+    record.check_out = timeStr;
+    saveData();
+    renderAll();
+    showToast(`✅ Umetoka saa ${timeStr}`, 'ok');
+}
+
+// ====================================================================
+// PATIENT OPERATIONS
+// ====================================================================
+async function confirmAddPatient() {
+    if (!currentUser) return;
+    const name = document.getElementById('patientName').value.trim();
+    const phone = document.getElementById('patientPhone').value.trim();
+    const address = document.getElementById('patientAddress').value.trim();
+    const notes = document.getElementById('patientNotes').value.trim();
+    if (!name) { showToast('Andika jina la mgonjwa', 'warn'); return; }
+    const patient = {
+        id: 'p' + Date.now() + Math.random().toString(36).substr(2, 4),
+        name,
+        phone: phone || '',
+        address: address || '',
+        notes: notes || '',
+        taken: false,
+        date: getTodayStr()
+    };
+    if (!db.patients) db.patients = [];
+    db.patients.push(patient);
+    saveData();
+    addToSyncQueue('addPatient', patient);
+    closeModal('newPatientModal');
+    document.getElementById('patientName').value = '';
+    document.getElementById('patientPhone').value = '';
+    document.getElementById('patientAddress').value = '';
+    document.getElementById('patientNotes').value = '';
+    renderPatients();
+    showToast('✅ Mgonjwa amesajiliwa!', 'ok');
+}
+
+async function togglePatientTaken(patientId) {
+    const patient = db.patients.find(p => p.id === patientId);
+    if (!patient) return;
+    patient.taken = !patient.taken;
+    await supabase.query('patients', 'PATCH', { taken: patient.taken }, patientId);
+    saveData();
+    renderPatients();
+}
+
+async function deletePatient(patientId) {
+    if (!confirm('Futa mgonjwa huyu?')) return;
+    await supabase.deletePatient(patientId);
+    db.patients = db.patients.filter(p => p.id !== patientId);
+    saveData();
+    renderPatients();
+}
+
+// ====================================================================
+// STOCK OPERATIONS
+// ====================================================================
+async function adminUpdateStock() {
+    if (!currentUser || currentUser.role !== 'admin') {
+        showToast('Sehemu hii ni ya Admin!', 'warn');
+        return;
+    }
+    const name = document.getElementById('stockProductName').value.trim();
+    const desc = document.getElementById('stockProductDesc').value.trim();
+    const qty = parseInt(document.getElementById('stockQty').value) || 0;
+    const price = parseInt(document.getElementById('stockPrice').value) || 0;
+    if (!name) { showToast('Andika jina la bidhaa', 'warn'); return; }
+    const item = {
+        id: 'st' + Date.now() + Math.random().toString(36).substr(2, 4),
+        name,
+        description: desc || '',
+        qty,
+        price,
+        date: getTodayStr()
+    };
+    if (!db.stock) db.stock = [];
+    db.stock.push(item);
+    saveData();
+    addToSyncQueue('addStock', item);
+    document.getElementById('stockProductName').value = '';
+    document.getElementById('stockProductDesc').value = '';
+    document.getElementById('stockQty').value = '';
+    document.getElementById('stockPrice').value = '';
+    renderStock();
+    showToast('✅ Stock imeongezwa!', 'ok');
+}
+
+// ====================================================================
+// SALES OPERATIONS
+// ====================================================================
+async function recordSale() {
+    if (!currentUser) return;
+    const select = document.getElementById('saleDrugSelect');
+    const drugId = select.value;
+    const qty = parseInt(document.getElementById('saleQty').value) || 1;
+    if (!drugId) { showToast('Chagua bidhaa', 'warn'); return; }
+    const item = db.stock.find(d => d.id === drugId);
+    if (!item) { showToast('Bidhaa haipo!', 'warn'); return; }
+    if ((item.qty || 0) < qty) { showToast('Stock haitoshi!', 'warn'); return; }
+    item.qty = (item.qty || 0) - qty;
+    const sale = {
+        id: 's' + Date.now() + Math.random().toString(36).substr(2, 4),
+        drug_id: drugId,
+        user_id: currentUser.id,
+        user_name: currentUser.name,
+        qty,
+        price: item.price || 0,
+        total: qty * (item.price || 0),
+        date: getTodayStr()
+    };
+    if (!db.sales) db.sales = [];
+    db.sales.push(sale);
+    saveData();
+    addToSyncQueue('addSale', sale);
+    await supabase.updateStock(drugId, { qty: item.qty });
+    document.getElementById('saleQty').value = '1';
+    renderAll();
+    showToast('✅ Mauzo yamerekodiwa!', 'ok');
+}
+
+// ====================================================================
+// EXPENSE OPERATIONS
+// ====================================================================
+async function confirmAddExpense() {
+    if (!currentUser || currentUser.role !== 'admin') {
+        showToast('Sehemu hii ni ya Admin!', 'warn');
+        return;
+    }
+    const name = document.getElementById('expenseName').value.trim();
+    const amount = parseInt(document.getElementById('expenseAmount').value) || 0;
+    const desc = document.getElementById('expenseDesc').value.trim();
+    if (!name || amount <= 0) { showToast('Jaza maelezo yote', 'warn'); return; }
+    const expense = {
+        id: 'e' + Date.now() + Math.random().toString(36).substr(2, 4),
+        name,
+        amount,
+        description: desc || '',
+        date: getTodayStr()
+    };
+    if (!db.expenses) db.expenses = [];
+    db.expenses.push(expense);
+    saveData();
+    addToSyncQueue('addExpense', expense);
+    closeModal('newExpenseModal');
+    document.getElementById('expenseName').value = '';
+    document.getElementById('expenseAmount').value = '';
+    document.getElementById('expenseDesc').value = '';
+    renderExpenses();
+    showToast('✅ Matumizi yameongezwa!', 'ok');
+}
+
+async function deleteExpense(expenseId) {
+    if (!confirm('Futa matumizi haya?')) return;
+    await supabase.deleteExpense(expenseId);
+    db.expenses = db.expenses.filter(e => e.id !== expenseId);
+    saveData();
+    renderExpenses();
+}
+
+// ====================================================================
+// EVENTS
+// ====================================================================
+async function confirmAddEvent() {
+    if (!currentUser) return;
+    const title = document.getElementById('eventTitle').value.trim();
+    const date = document.getElementById('eventDate').value;
+    const desc = document.getElementById('eventDesc').value.trim();
+    if (!title || !date) { showToast('Jaza maelezo yote', 'warn'); return; }
+    const event = {
+        id: 'ev' + Date.now() + Math.random().toString(36).substr(2, 4),
+        title,
+        date,
+        description: desc || ''
+    };
+    if (!db.events) db.events = [];
+    db.events.push(event);
+    saveData();
+    addToSyncQueue('addEvent', event);
+    closeModal('newEventModal');
+    document.getElementById('eventTitle').value = '';
+    document.getElementById('eventDate').value = '';
+    document.getElementById('eventDesc').value = '';
+    renderCalendar();
+    showToast('✅ Tukio limeongezwa!', 'ok');
+}
+
+// ====================================================================
+// USER OPERATIONS
+// ====================================================================
+async function confirmAddUser() {
+    if (!currentUser || currentUser.id !== ADMIN_ID) {
+        showToast('Sehemu hii ni ya Admin!', 'warn');
+        return;
+    }
+    const name = document.getElementById('newUserName').value.trim();
+    const id = document.getElementById('newUserId').value.trim();
+    const phone = document.getElementById('newUserPhone').value.trim();
+    const pass = document.getElementById('newUserPass').value.trim() || '123';
+    const salary = parseInt(document.getElementById('newUserSalary').value) || 0;
+    if (!name || !id) { showToast('Jaza taarifa zote', 'warn'); return; }
+    if (db.users.find(u => u.id === id)) { showToast('Namba tayari ipo!', 'warn'); return; }
+    const newUser = {
+        id,
+        name,
+        password: pass,
+        role: 'staff',
+        phone: phone || '',
+        salary: salary,
+        image: ''
+    };
+    db.users.push(newUser);
+    saveData();
+    addToSyncQueue('addUser', newUser);
+    closeModal('newUserModal');
+    document.getElementById('newUserName').value = '';
+    document.getElementById('newUserId').value = '';
+    document.getElementById('newUserPhone').value = '';
+    document.getElementById('newUserPass').value = '123';
+    document.getElementById('newUserSalary').value = '';
+    renderAll();
+    showToast('✅ Mfanyakazi ' + name + ' amesajiliwa!', 'ok');
+    showToast('🔑 Namba: "' + id + '" · Nenosiri: "' + pass + '"', 'ok');
+}
+
+async function deleteUser(userId) {
+    if (!currentUser || currentUser.id !== ADMIN_ID) {
+        showToast('Sehemu hii ni ya Admin!', 'warn');
+        return;
+    }
+    if (userId === ADMIN_ID) { showToast('Huwezi kumfuta Admin!', 'warn'); return; }
+    if (!confirm('Futa mfanyakazi huyu?')) return;
+    await supabase.deleteUser(userId);
+    db.users = db.users.filter(u => u.id !== userId);
+    saveData();
+    renderAll();
+    showToast('Mfanyakazi amefutwa!', 'ok');
+}
+
+// ====================================================================
+// ADMIN: ASSIGN TASK
+// ====================================================================
+async function adminAssignTask() {
+    if (!currentUser || currentUser.id !== ADMIN_ID) {
+        showToast('Sehemu hii ni ya Admin!', 'warn');
+        return;
+    }
+    const userId = document.getElementById('adminTaskUser').value;
+    const name = document.getElementById('adminTaskName').value.trim();
+    const desc = document.getElementById('adminTaskDesc').value.trim();
+    const date = document.getElementById('adminTaskDate').value;
+    if (!userId || !name) { showToast('Jaza maelezo yote', 'warn'); return; }
+    const task = {
+        id: 't' + Date.now() + Math.random().toString(36).substr(2, 4),
+        user_id: userId,
+        name,
+        description: desc || 'Imepewa na Admin',
+        date: date || getTodayStr(),
+        priority: 'medium',
+        done: false,
+        approved: false
+    };
+    db.tasks.push(task);
+    saveData();
+    addToSyncQueue('addTask', task);
+    document.getElementById('adminTaskName').value = '';
+    document.getElementById('adminTaskDesc').value = '';
+    renderAll();
+    showToast('✅ Kazi imegawanywa!', 'ok');
+}
+
+// ====================================================================
+// ADMIN: BONUS
+// ====================================================================
+async function adminAddBonus() {
+    if (!currentUser || currentUser.id !== ADMIN_ID) {
+        showToast('Sehemu hii ni ya Admin!', 'warn');
+        return;
+    }
+    const userId = document.getElementById('adminBonusUser').value;
+    const amount = parseInt(document.getElementById('adminBonusAmount').value);
+    const reason = document.getElementById('adminBonusReason').value.trim();
+    if (!userId || isNaN(amount) || amount <= 0) { showToast('Jaza taarifa sahihi', 'warn'); return; }
+    const bonus = {
+        id: 'b' + Date.now() + Math.random().toString(36).substr(2, 4),
+        user_id: userId,
+        amount,
+        reason: reason || 'Bonus',
+        date: getTodayStr()
+    };
+    if (!db.bonuses) db.bonuses = [];
+    db.bonuses.push(bonus);
+    saveData();
+    addToSyncQueue('addBonus', bonus);
+    document.getElementById('adminBonusAmount').value = '';
+    document.getElementById('adminBonusReason').value = '';
+    renderAll();
+    showToast('✅ Bonus imetolewa!', 'ok');
+}
+
+// ====================================================================
+// BONUS WINNER
+// ====================================================================
+function setBonusWinner() {
+    if (!currentUser || currentUser.id !== ADMIN_ID) {
+        showToast('Sehemu hii ni ya Admin!', 'warn');
+        return;
+    }
+    const userId = document.getElementById('adminWinnerUser').value;
+    const amount = parseInt(document.getElementById('adminWinnerAmount').value);
+    if (!userId || isNaN(amount) || amount <= 0) { showToast('Jaza taarifa sahihi', 'warn'); return; }
+    const user = db.users.find(u => u.id === userId);
+    if (!user) { showToast('Mfanyakazi hapatikani!', 'warn'); return; }
+    db.winner = { user_id: userId, amount: amount, name: user.name };
+    saveData();
+    document.getElementById('adminWinnerAmount').value = '';
+    updateBonus3D();
+    showToast('🏆 ' + user.name + ' ameteuliwa!', 'ok');
+}
+
+function updateBonus3D() {
+    const container = document.getElementById('bonus3dContainer');
+    if (!container) return;
+    const winner = db.winner || { name: 'Hakuna', amount: 0 };
+    container.innerHTML = `
+        <div class="label">🏆 MFANYAKAZI BORA WA MWEZI</div>
+        <div class="winner">${escapeHtml(winner.name)}</div>
+        <div class="amount">TSh ${(winner.amount || 0).toLocaleString()}</div>
+        <div class="label">Bonus ya Mwezi</div>
+    `;
+}
+
+// ====================================================================
+// SCROLLING TEXT
+// ====================================================================
+function updateScrollingTextDisplay() {
+    const el = document.getElementById('scrollingTextContent');
+    if (!el) return;
+    el.textContent = db.scrolling_text ? db.scrolling_text.content : '🎉 Karibu Dr. William!';
+}
+
+// ====================================================================
+// SYNC DATA
+// ====================================================================
+async function syncData() {
+    if (!navigator.onLine) {
+        showToast('⚠️ Hakuna mtandao!', 'warn');
+        return;
+    }
+    const dot = document.getElementById('syncDot');
+    const text = document.getElementById('syncText');
+    dot.className = 'sync-dot syncing';
+    text.textContent = 'Inasawazisha...';
+    
+    try {
+        await processSyncQueue();
+        
+        const [users, tasks, attendance, patients, stock, sales, expenses, events, bonuses, salaryRequests, winner] = await Promise.all([
+            supabase.getUsers(), supabase.getTasks(), supabase.getAttendance(),
+            supabase.getPatients(), supabase.getStock(), supabase.getSales(),
+            supabase.getExpenses(), supabase.getEvents(), supabase.getBonuses(),
+            supabase.getSalaryRequests(), supabase.getWinner()
+        ]);
+        
+        if (users && !users.error) {
+            users.forEach(u => { if (!db.users.find(d => d.id === u.id)) db.users.push(u); });
+        }
+        if (tasks && !tasks.error) {
+            tasks.forEach(t => { if (!db.tasks.find(d => d.id === t.id)) db.tasks.push(t); });
+        }
+        if (attendance && !attendance.error) db.attendance = attendance;
+        if (patients && !patients.error) db.patients = patients;
+        if (stock && !stock.error) db.stock = stock;
+        if (sales && !sales.error) db.sales = sales;
+        if (expenses && !expenses.error) db.expenses = expenses;
+        if (events && !events.error) db.events = events;
+        if (bonuses && !bonuses.error) db.bonuses = bonuses;
+        if (salaryRequests && !salaryRequests.error) db.salary_requests = salaryRequests;
+        if (winner && !winner.error && winner.length > 0) db.winner = winner[0];
+        
+        saveData();
+        dot.className = 'sync-dot online';
+        text.textContent = 'Cloud';
+        renderAll();
+        showToast('✅ Data imesawazishwa!', 'ok');
+    } catch (e) {
+        dot.className = 'sync-dot offline';
+        text.textContent = 'Offline';
+        showToast('⚠️ Hitilafu ya sync', 'warn');
+    }
+}
+
+// ====================================================================
+// MODAL HELPERS
+// ====================================================================
+function openModal(id) {
+    const modal = document.getElementById(id);
+    if (modal) { modal.classList.add('open'); modal.style.display = 'flex'; }
+}
+function closeModal(id) {
+    const modal = document.getElementById(id);
+    if (modal) { modal.classList.remove('open'); modal.style.display = 'none'; }
+}
+
+// ====================================================================
+// CLOCK
+// ====================================================================
+function tickClock() {
+    document.getElementById('clockDisplay').textContent = new Date().toLocaleTimeString('en-GB');
+}
+setInterval(tickClock, 1000);
+
+// ====================================================================
+// POPULATE SELECTS
+// ====================================================================
+function populateSaleSelects() {
+    const select = document.getElementById('saleDrugSelect');
+    if (!select) return;
+    const items = db.stock || [];
+    select.innerHTML = items.map(item =>
+        `<option value="${item.id}">${escapeHtml(item.name)} (Ziko: ${item.qty || 0})</option>`
+    ).join('') || '<option value="">Hakuna bidhaa</option>';
+}
+
+// ====================================================================
+// NOTIFICATIONS
+// ====================================================================
+function updateNotifications() {
+    const badge = document.getElementById('notificationBadge');
+    if (!badge || !currentUser) return;
+    const notifications = db.notifications ? db.notifications.filter(n => n.user_id === currentUser.id && !n.read) : [];
+    const count = notifications.length;
+    if (count > 0) { badge.style.display = 'flex'; badge.textContent = count; } 
+    else { badge.style.display = 'none'; }
+}
+
+function showNotifications() {
+    const notifications = db.notifications ? db.notifications.filter(n => n.user_id === currentUser.id) : [];
+    if (notifications.length === 0) { showToast('Hakuna taarifa.', 'ok'); return; }
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay open';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-box">
+            <div class="modal-head"><h3>🔔 Taarifa</h3><button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button></div>
+            <div style="max-height:400px;overflow-y:auto;">
+                ${notifications.slice(0, 20).map(n => `
+                    <div class="task-item" style="border-left:3px solid ${n.read ? 'var(--line)' : 'var(--gold)'};">
+                        <div class="task-info">
+                            <div class="task-name">${escapeHtml(n.title || 'Taarifa')}</div>
+                            <div class="task-meta">${escapeHtml(n.message || '')} · ${n.date || ''}</div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+            <div class="modal-actions">
+                <button class="btn-ghost" onclick="this.closest('.modal-overlay').remove()">Funga</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
+
+// ====================================================================
+// AI CHAT
+// ====================================================================
+async function sendAIChat() {
+    if (!currentUser || currentUser.id !== ADMIN_ID) {
+        showToast('Sehemu hii ni ya Admin!', 'warn');
+        return;
+    }
+    const input = document.getElementById('aiChatInput');
+    const container = document.getElementById('aiChatMessages');
+    if (!input || !container) return;
+    const message = input.value.trim();
+    if (!message) return;
+    
+    container.innerHTML += `<div class="msg-user"><span>${escapeHtml(message)}</span></div>`;
+    input.value = '';
+    container.scrollTop = container.scrollHeight;
+    
+    container.innerHTML += `<div class="msg-ai"><span><i class="fa-solid fa-spinner fa-spin"></i> AI inatafakari...</span></div>`;
+    container.scrollTop = container.scrollHeight;
+    
+    try {
+        const res = await fetch('https://api.mistral.ai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer 5vQ40rXzF9KTqxhZ9D8sApIkFCvLV81M'
+            },
+            body: JSON.stringify({
+                model: 'mistral-tiny',
+                messages: [{ role: 'user', content: message + ' Jibu kwa Kiswahili.' }],
+                temperature: 0.7,
+                max_tokens: 500
+            })
+        });
+        if (!res.ok) throw new Error('API error');
+        const data = await res.json();
+        const response = data.choices[0].message.content;
+        const msgs = container.querySelectorAll('.msg-ai');
+        if (msgs.length > 0) {
+            msgs[msgs.length - 1].innerHTML = `<span>${response.replace(/\n/g, '<br>')}</span>`;
+        }
+        container.scrollTop = container.scrollHeight;
+    } catch (error) {
+        const msgs = container.querySelectorAll('.msg-ai');
+        if (msgs.length > 0) {
+            msgs[msgs.length - 1].innerHTML = `<span style="color:var(--red);">❌ Hitilafu: ${error.message}</span>`;
+        }
+    }
+}
+
+// ====================================================================
+// RENDER ALL
+// ====================================================================
+function renderAll() {
+    renderPage(currentPage);
+    renderDashboard();
+    updateBonus3D();
+    updateScrollingTextDisplay();
+    if (currentUser && currentUser.role === 'admin') {
+        populateAdminSelects();
+        renderApproveTasks();
+        renderSalaryRequests();
+    }
+    populateSaleSelects();
+    updateNotifications();
+}
+
+// ====================================================================
+// INIT
+// ====================================================================
+function init() {
+    if (!db.users.find(u => u.id === ADMIN_ID)) {
+        db.users.push({ id: ADMIN_ID, name: 'Admin', password: ADMIN_PASS, role: 'admin', phone: '0712345678', salary: 0, image: '' });
+        saveData();
+    }
+    if (!db.winner) { db.winner = { user_id: null, amount: 0, name: 'Hakuna' }; saveData(); }
+    if (!db.scrolling_text) { db.scrolling_text = { id: 'st1', content: '🎉 Karibu Dr. William!' }; saveData(); }
+    
+    document.getElementById('loginId').value = '';
+    document.getElementById('loginPass').value = '';
+    document.getElementById('taskDateInput').value = getTodayStr();
+    document.getElementById('eventDate').value = getTodayStr();
+    document.getElementById('adminTaskDate').value = getTodayStr();
+    document.getElementById('attendanceDatePicker').value = getTodayStr();
+    
+    document.querySelectorAll('.modal-overlay').forEach(m => {
+        m.addEventListener('click', function(e) { if (e.target === this) { this.classList.remove('open'); this.style.display = 'none'; } });
+    });
+    
+    setTimeout(syncData, 3000);
+    
+    console.log('✅ Dr. William v14 imeanza!');
+    console.log('👑 Admin: 1616 / 1616');
+    console.log('✍️ Signature ya Admin inahitajika kwa mshahara');
+    console.log('💰 Mshahara unapungua automatically baada ya kuidhinishwa');
+    console.log('📱 Inafanya kazi kwa kifaa chochote');
+}
+
+document.addEventListener('DOMContentLoaded', init);
+if (document.readyState !== 'loading') init();
+</script>
+</body>
+</html>
