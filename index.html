@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Dr. William - Mfumo Kamili v19</title>
+    <title>Dr. William - Mfumo Kamili v20</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         /* ============================================================
-           ROOT VARIABLES - COLOR THEME
+           ROOT VARIABLES - COMPLETE THEME
            ============================================================ */
         :root {
             --gold: #D4A24E;
@@ -758,6 +758,30 @@
         .camera-btn:hover { opacity: 0.85; }
 
         /* ============================================================
+           REMINDER ALERT
+           ============================================================ */
+        .reminder-alert {
+            background: var(--red-soft);
+            border: 2px solid var(--red);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            animation: pulseAlert 1.5s ease-in-out infinite;
+        }
+        @keyframes pulseAlert {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .reminder-alert .alert-icon { font-size: 24px; color: var(--red); }
+        .reminder-alert .alert-text { flex: 1; font-weight: 600; color: var(--red); }
+        .reminder-alert .alert-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+        /* ============================================================
            MISC
            ============================================================ */
         .flex { display: flex; gap: 10px; flex-wrap: wrap; }
@@ -823,6 +847,7 @@
             .stats-grid { grid-template-columns: 1fr 1fr; }
             .salary-card .amount { font-size: 24px; }
             .login-box { padding: 20px; }
+            .reminder-alert { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
@@ -839,12 +864,13 @@
 <div id="loginPage" style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:16px;">
     <div class="login-box">
         <div class="logo">🩺 Dr. William</div>
-        <div class="subtitle">Mfumo Kamili wa Kliniki na Biashara v19</div>
+        <div class="subtitle">Mfumo Kamili wa Kliniki na Biashara v20</div>
         <div style="display:flex;align-items:center;justify-content:center;gap:8px;font-size:11px;color:var(--text-dim);margin-bottom:12px;">
             <span class="sync-dot online" id="loginSyncDot"></span>
             <span id="loginSyncText">Online</span>
             <span style="margin-left:8px;font-size:10px;color:var(--text-faint);">☁️ Supabase</span>
             <span style="font-size:10px;color:var(--purple);">🤖 AI</span>
+            <span style="font-size:10px;color:var(--gold);">🔔 Reminders</span>
         </div>
         <div class="field">
             <label>Namba ya Mfanyakazi</label>
@@ -861,9 +887,8 @@
         <div style="margin-top:12px;font-size:10px;color:var(--text-faint);">
             <p>👑 Admin: <strong style="color:var(--gold);">1616</strong> / PIN: <strong style="color:var(--gold);">1616</strong></p>
             <p>📱 Inafanya kazi kwa simu na kompyuta</p>
-            <p>☁️ Data zote zimehifadhiwa Supabase Cloud</p>
-            <p>🤖 AI Assistant imewashwa</p>
-            <p>📸 Picha za bidhaa zinaweza kupigwa kwa camera</p>
+            <p>☁️ Supabase Cloud · 🤖 AI Assistant</p>
+            <p>🔔 Automated Reminders · 📸 Camera Support</p>
         </div>
     </div>
 </div>
@@ -902,6 +927,11 @@
                 </button>
             </div>
         </div>
+
+        <!-- ==========================================================
+             REMINDER ALERT - PERSISTENT NOTIFICATIONS
+             ========================================================== -->
+        <div id="reminderAlertContainer" style="display:none;"></div>
 
         <!-- ==========================================================
              NAV TABS
@@ -1127,10 +1157,10 @@
                 <div class="table-responsive">
                     <table class="data-table" id="patientTable">
                         <thead>
-                            <tr><th>#</th><th>Jina</th><th>Simu</th><th>Umri</th><th>Dawa</th><th>Tarehe</th><th>Vitendo</th></tr>
+                            <tr><th>#</th><th>Jina</th><th>Simu</th><th>Umri</th><th>Dawa</th><th>Picha</th><th>Tarehe</th><th>Vitendo</th></tr>
                         </thead>
                         <tbody id="patientTableBody">
-                            <tr><td colspan="7" style="text-align:center;padding:16px;color:var(--text-faint);">Hakuna wagonjwa</td></tr>
+                            <tr><td colspan="8" style="text-align:center;padding:16px;color:var(--text-faint);">Hakuna wagonjwa</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -1172,6 +1202,9 @@
                     <img id="stockImagePreviewImg" class="image-preview" src="">
                     <button class="btn btn-xs btn-danger" onclick="document.getElementById('stockImagePreview').style.display='none';document.getElementById('stockImagePreviewImg').src='';">Futa</button>
                 </div>
+                <div style="font-size:11px;color:var(--text-faint);margin-top:4px;">
+                    <i class="fas fa-info-circle"></i> Admin pekee ndiye anaweza kuongeza stock
+                </div>
                 <button class="btn btn-gold btn-block" onclick="adminUpdateStock()">
                     <i class="fas fa-check"></i> Hifadhi
                 </button>
@@ -1209,6 +1242,9 @@
                         <option value="bank">🏦 Benki</option>
                     </select>
                 </div>
+                <div style="font-size:11px;color:var(--text-faint);margin-top:4px;">
+                    <i class="fas fa-info-circle"></i> Wafanyakazi wote wanaweza kufanya mauzo
+                </div>
                 <button class="btn btn-gold btn-block" onclick="recordSale()">
                     <i class="fas fa-check"></i> Rekodi Mauzo
                 </button>
@@ -1241,6 +1277,9 @@
                 </div>
                 <div class="field"><label>Kiasi (TSh)</label><input type="number" id="expenseAmount" placeholder="K.mf. 50000"></div>
                 <div class="field"><label>Maelezo</label><input type="text" id="expenseDesc" placeholder="Maelezo"></div>
+                <div style="font-size:11px;color:var(--text-faint);margin-top:4px;">
+                    <i class="fas fa-info-circle"></i> Admin pekee ndiye anaweza kuongeza matumizi
+                </div>
                 <button class="btn btn-red btn-block" onclick="confirmAddExpense()">
                     <i class="fas fa-check"></i> Hifadhi
                 </button>
@@ -1249,6 +1288,9 @@
             <div class="card card-gold">
                 <h4 style="font-size:13px;color:var(--gold);">📊 Muhtasari wa Matumizi</h4>
                 <div id="expenseSummary"></div>
+                <div style="font-size:11px;color:var(--text-faint);margin-top:4px;">
+                    <i class="fas fa-lock"></i> Maelezo ya kina yanaonekana na Admin pekee
+                </div>
             </div>
         </div>
 
@@ -1265,7 +1307,7 @@
             <div class="card card-gold">
                 <h4 style="font-size:13px;color:var(--gold);margin-bottom:6px;">📋 Omba Mshahara</h4>
                 <div class="field"><label>Kiasi (TSh)</label>
-                    <input type="number" id="salaryRequestAmount" placeholder="K.mf. 200000">
+                    <input type="number" id="salaryRequestAmount" placeholder="K.mf. 200000" min="0">
                 </div>
                 <div class="field"><label>Maelezo</label>
                     <input type="text" id="salaryRequestNote" placeholder="K.mf. Kwa mahitaji ya dharura">
@@ -1292,6 +1334,7 @@
                         <button class="btn btn-sm btn-blue" onclick="generateReport('attendance')"><i class="fas fa-clock"></i> Mahudhurio</button>
                         <button class="btn btn-sm btn-blue" onclick="generateReport('patients')"><i class="fas fa-users"></i> Wagonjwa</button>
                         <button class="btn btn-sm btn-blue" onclick="generateReport('tasks')"><i class="fas fa-tasks"></i> Majukumu</button>
+                        <button class="btn btn-sm btn-blue" onclick="generateReport('financial')"><i class="fas fa-chart-pie"></i> Kifedha</button>
                     </div>
                     <div id="reportOutput" style="margin-top:12px;padding:12px;background:var(--panel-2);border-radius:8px;min-height:100px;">
                         <div style="color:var(--text-faint);text-align:center;padding:20px;">
@@ -1367,7 +1410,7 @@
                 <div class="field-row">
                     <div class="field">
                         <label>Mshahara wa Admin (TSh)</label>
-                        <input type="number" id="adminSalaryInput" placeholder="K.mf. 1000000">
+                        <input type="number" id="adminSalaryInput" placeholder="K.mf. 1000000" min="0">
                     </div>
                     <div class="field" style="display:flex;align-items:flex-end;">
                         <button class="btn btn-gold btn-block" onclick="updateAdminSalary()">
@@ -1429,7 +1472,7 @@
                 </h4>
                 <div class="field-row">
                     <div class="field"><label>Mfanyakazi</label><select id="adminBonusUser"></select></div>
-                    <div class="field"><label>Kiasi (TSh)</label><input type="number" id="adminBonusAmount" placeholder="K.mf. 50000"></div>
+                    <div class="field"><label>Kiasi (TSh)</label><input type="number" id="adminBonusAmount" placeholder="K.mf. 50000" min="0"></div>
                 </div>
                 <div class="field"><label>Sababu</label><input type="text" id="adminBonusReason" placeholder="K.mf. Utendaji bora"></div>
                 <button class="btn btn-gold btn-block" onclick="adminAddBonus()">
@@ -1443,7 +1486,7 @@
                 </h4>
                 <div class="field-row">
                     <div class="field"><label>Mfanyakazi Bora</label><select id="adminWinnerUser"></select></div>
-                    <div class="field"><label>Kiasi (TSh)</label><input type="number" id="adminWinnerAmount" placeholder="K.mf. 100000"></div>
+                    <div class="field"><label>Kiasi (TSh)</label><input type="number" id="adminWinnerAmount" placeholder="K.mf. 100000" min="0"></div>
                 </div>
                 <button class="btn btn-gold btn-block" onclick="setBonusWinner()">
                     <i class="fas fa-crown"></i> Weka Mshindi
@@ -1455,6 +1498,9 @@
                     <i class="fas fa-key"></i> Ruhusa za Wafanyakazi
                 </h4>
                 <div id="permissionsList"></div>
+                <div style="font-size:11px;color:var(--text-faint);margin-top:4px;">
+                    <i class="fas fa-info-circle"></i> Admin pekee ndiye anayesimamia ruhusa
+                </div>
             </div>
         </div>
 
@@ -1472,6 +1518,7 @@
         <div class="field"><label>Jina la Kazi</label><input type="text" id="taskNameInput" placeholder="K.mf. Andika ripoti"></div>
         <div class="field"><label>Maelezo</label><input type="text" id="taskDescInput" placeholder="Maelezo"></div>
         <div class="field"><label>Tarehe</label><input type="date" id="taskDateInput"></div>
+        <div class="field"><label>Muda wa Kukumbushwa</label><input type="time" id="taskReminderTime" value="08:00"></div>
         <div class="field"><label>Kipaumbele</label>
             <select id="taskPriorityInput">
                 <option value="high">🔴 Juu</option>
@@ -1494,7 +1541,7 @@
         <div class="field"><label>Namba ya Mfanyakazi</label><input type="text" id="newUserId" placeholder="K.mf. 1234"></div>
         <div class="field"><label>Nambari ya Simu</label><input type="text" id="newUserPhone" placeholder="K.mf. 0712345678"></div>
         <div class="field"><label>Nenosiri / PIN</label><input type="password" id="newUserPass" placeholder="PIN (namba tu)" value="1234" maxlength="10"></div>
-        <div class="field"><label>Mshahara (TSh)</label><input type="number" id="newUserSalary" placeholder="K.mf. 500000"></div>
+        <div class="field"><label>Mshahara (TSh)</label><input type="number" id="newUserSalary" placeholder="K.mf. 500000" min="0"></div>
         <div class="field"><label>Picha</label><input type="file" id="newUserImage" accept="image/*" onchange="previewUserImage(event)"></div>
         <div id="userImagePreview" style="display:none;margin-bottom:8px;">
             <img id="userImagePreviewImg" class="image-preview" src="">
@@ -1513,12 +1560,15 @@
         <div class="field"><label>Jina Kamili</label><input type="text" id="patientName" placeholder="K.mf. Jane Doe"></div>
         <div class="field"><label>Nambari ya Simu</label><input type="text" id="patientPhone" placeholder="K.mf. 0712345678"></div>
         <div class="field"><label>Mahali</label><input type="text" id="patientAddress" placeholder="K.mf. Dar es Salaam"></div>
-        <div class="field"><label>Umri</label><input type="number" id="patientAge" placeholder="K.mf. 30"></div>
+        <div class="field"><label>Umri</label><input type="number" id="patientAge" placeholder="K.mf. 30" min="0"></div>
         <div class="field"><label>Jinsia</label>
             <select id="patientGender">
                 <option value="M">M</option>
                 <option value="F">F</option>
             </select>
+        </div>
+        <div class="field"><label>Picha ya Mgonjwa</label>
+            <input type="file" id="patientImage" accept="image/*">
         </div>
         <div class="field"><label>Maelezo</label><input type="text" id="patientNotes" placeholder="Maelezo ya mgonjwa"></div>
         <div class="modal-actions">
@@ -1534,6 +1584,7 @@
         <div class="modal-head"><h3><i class="fas fa-calendar-plus"></i> Ongeza Tukio</h3><button class="modal-close" onclick="closeModal('newEventModal')">&times;</button></div>
         <div class="field"><label>Jina la Tukio</label><input type="text" id="eventTitle" placeholder="K.mf. Mkutano"></div>
         <div class="field"><label>Tarehe</label><input type="date" id="eventDate"></div>
+        <div class="field"><label>Muda</label><input type="time" id="eventTime" value="09:00"></div>
         <div class="field"><label>Maelezo</label><input type="text" id="eventDesc" placeholder="Maelezo"></div>
         <div class="modal-actions">
             <button class="btn btn-sm btn-outline" onclick="closeModal('newEventModal')">Ghairi</button>
@@ -1591,7 +1642,8 @@
     // ============================================================
     const ADMIN_ID = '1616';
     const ADMIN_PASS = '1616';
-    const STORAGE_KEY = 'dr_william_v19';
+    const STORAGE_KEY = 'dr_william_v20';
+    const REMINDER_CHECK_INTERVAL = 30000; // 30 seconds
 
     // ============================================================
     // DATA STORE
@@ -1603,6 +1655,7 @@
     let calendarYear = new Date().getFullYear();
     let workTimerInterval = null;
     let reminderInterval = null;
+    let reminderAlertInterval = null;
     let pendingSalaryRequestId = null;
 
     function loadData() {
@@ -1935,6 +1988,7 @@
     function handleLogout() {
         if (workTimerInterval) { clearInterval(workTimerInterval); workTimerInterval = null; }
         if (reminderInterval) { clearInterval(reminderInterval); reminderInterval = null; }
+        if (reminderAlertInterval) { clearInterval(reminderAlertInterval); reminderAlertInterval = null; }
         currentUser = null;
         document.getElementById('mainApp').style.display = 'none';
         document.getElementById('loginPage').style.display = 'flex';
@@ -1962,17 +2016,19 @@
             }
         }
 
+        // RBAC - Show/hide based on role
         const perms = db.permissions || {};
         const userPerms = perms[currentUser.id] || {};
-        document.getElementById('stockAddForm').style.display = (isAdmin || userPerms.stock) ? 'block' : 'none';
-        document.getElementById('salesAddForm').style.display = (isAdmin || userPerms.sales) ? 'block' : 'none';
-        document.getElementById('expensesAddForm').style.display = (isAdmin || userPerms.expenses) ? 'block' : 'none';
+        document.getElementById('stockAddForm').style.display = isAdmin ? 'block' : 'none';
+        document.getElementById('salesAddForm').style.display = 'block'; // All staff can sell
+        document.getElementById('expensesAddForm').style.display = isAdmin ? 'block' : 'none';
 
         document.getElementById('tasksUserRole').textContent = isAdmin ? '(Admin - Unaweza kugawanya majukumu)' : '';
 
         populateAdminSelects();
         renderAll();
         startReminders();
+        startReminderAlerts();
         showToast('Karibu ' + currentUser.name + '!', 'ok');
         if (navigator.onLine) syncData();
     }
@@ -2002,7 +2058,7 @@
     }
 
     // ============================================================
-    // REMINDERS
+    // REMINDERS - PERSISTENT NOTIFICATIONS
     // ============================================================
     function startReminders() {
         if (reminderInterval) { clearInterval(reminderInterval); reminderInterval = null; }
@@ -2028,6 +2084,61 @@
                 }
             }
         }, 120000);
+    }
+
+    // ============================================================
+    // REMINDER ALERTS - PERSISTENT NOTIFICATIONS WITH SOUND
+    // ============================================================
+    function startReminderAlerts() {
+        if (reminderAlertInterval) { clearInterval(reminderAlertInterval); reminderAlertInterval = null; }
+        reminderAlertInterval = setInterval(() => {
+            if (!currentUser) return;
+            const today = getTodayStr();
+            const pendingTasks = db.tasks.filter(t => t.user_id === currentUser.id && t.date === today && !t.done);
+            const container = document.getElementById('reminderAlertContainer');
+            
+            if (pendingTasks.length > 0) {
+                // Play sound alert
+                try {
+                    const audio = new Audio('data:audio/wav;base64,UklGRlwAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YVoAAACBhYqFh4qDioyEi4yIjoyJko+SkpOSlJOVlJaXlpqXm5ybnJ6dnaCfoKKho6OkpKWnpqmpqqqrrK2srbCvr7CysbG0s7O2tbW3tri4ubq8u7y9vb68v8C+wcLBwsPCxMTFxcjGx8nIysnKy8vKzM3NztDO0dDT0dTS0tXT1tbX2NnZ29ra3Nvd3d/e39/g4OHi4uPj5OXl5+bm5+jp6Orq6+vr7Ozu7e7v8PDx8fLz8/T09PX19vf3+fj5+fr6+/v7/fz9/f7+//7/AAAAAA==');
+                    audio.play().catch(e => console.log('Audio play prevented'));
+                } catch(e) {}
+                
+                // Show persistent alert
+                container.style.display = 'block';
+                container.innerHTML = `
+                    <div class="reminder-alert">
+                        <span class="alert-icon"><i class="fas fa-bell"></i></span>
+                        <span class="alert-text">
+                            ⚠️ Una majukumu ${pendingTasks.length} yaliyobaki leo!
+                            ${pendingTasks.slice(0, 3).map(t => `"${t.name}"`).join(', ')}
+                            ${pendingTasks.length > 3 ? ` na ${pendingTasks.length - 3} mengine` : ''}
+                        </span>
+                        <div class="alert-actions">
+                            <button class="btn btn-xs btn-gold" onclick="showPage('tasks')">Angalia</button>
+                            ${pendingTasks.slice(0, 1).map(t => `
+                                <button class="btn btn-xs btn-green" onclick="quickCompleteTask('${t.id}')">Kamilisha</button>
+                            `).join('')}
+                            <button class="btn btn-xs btn-outline" onclick="document.getElementById('reminderAlertContainer').style.display='none'">Funga</button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                container.style.display = 'none';
+                container.innerHTML = '';
+            }
+        }, REMINDER_CHECK_INTERVAL);
+    }
+
+    function quickCompleteTask(taskId) {
+        const task = db.tasks.find(t => t.id === taskId);
+        if (!task) return;
+        task.done = true;
+        task.approved = false;
+        saveData();
+        renderAll();
+        document.getElementById('reminderAlertContainer').style.display = 'none';
+        showToast('✅ ' + task.name + ' imekamilika!', 'ok');
     }
 
     // ============================================================
@@ -2096,6 +2207,7 @@
                 <div class="task-info">
                     <div class="task-name">${escapeHtml(t.name)}</div>
                     <div class="task-meta">${t.priority === 'high' ? '🔴' : t.priority === 'medium' ? '🟡' : '🟢'} ${t.description || ''}</div>
+                    ${!t.done ? `<span class="badge badge-danger">⏳ Inasubiri</span>` : ''}
                 </div>
                 <span class="task-status ${t.approved ? 'approved' : (t.done ? 'done' : 'pending')}">
                     ${t.approved ? '✅' : (t.done ? '⏳' : '⏳')}
@@ -2195,6 +2307,8 @@
                     <div class="task-info">
                         <div class="task-name">${escapeHtml(t.name)}</div>
                         <div class="task-meta">${t.priority === 'high' ? '🔴 Juu' : t.priority === 'medium' ? '🟡 Kati' : '🟢 Chini'} ${t.description ? '· ' + escapeHtml(t.description) : ''}</div>
+                        ${!t.done ? `<span class="badge badge-danger">⏳ Inasubiri</span>` : ''}
+                        ${t.reminder_time ? `<span class="badge badge-info">⏰ ${t.reminder_time}</span>` : ''}
                     </div>
                     <span class="task-status ${t.approved ? 'approved' : (t.done ? 'done' : 'pending')}">
                         ${t.approved ? '✅' : (t.done ? '⏳ Inasubiri' : '⏳')}
@@ -2447,7 +2561,7 @@
         document.getElementById('patientNotTakenCount').textContent = notTaken;
 
         if (patients.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:16px;color:var(--text-faint);">Hakuna wagonjwa</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:16px;color:var(--text-faint);">Hakuna wagonjwa</td></tr>`;
             return;
         }
         tbody.innerHTML = patients.map((p, index) => `
@@ -2457,6 +2571,7 @@
                 <td>${escapeHtml(p.phone || '')}</td>
                 <td>${p.age || '-'}</td>
                 <td><span class="${p.taken ? 'status-taken' : 'status-not-taken'}">${p.taken ? '✅ Amechukua' : '❌ Hajachukua'}</span></td>
+                <td>${p.image ? `<img src="${p.image}" class="image-preview-sm">` : '-'}</td>
                 <td style="font-size:11px;color:var(--text-faint);">${p.date || ''}</td>
                 <td>
                     <button class="btn btn-xs btn-green" onclick="togglePatientTaken('${p.id}')">${p.taken ? 'Ondoa' : 'Chukua'}</button>
@@ -2533,18 +2648,25 @@
     function renderExpenses() {
         const container = document.getElementById('expensesContainer');
         const expenses = db.expenses ? db.expenses.sort((a, b) => b.date.localeCompare(a.date)) : [];
+        const isAdmin = currentUser && currentUser.id === ADMIN_ID;
+        
         if (expenses.length === 0) {
             container.innerHTML = '<div class="task-list-empty">Hakuna matumizi.</div>';
         } else {
-            container.innerHTML = expenses.slice(0, 30).map(e => `
-                <div class="task-item" style="border-left:3px solid var(--red);">
-                    <div class="task-info">
-                        <div class="task-name">${escapeHtml(e.name || 'Matumizi')}</div>
-                        <div class="task-meta">TSh ${(e.amount || 0).toLocaleString()} · ${e.date || ''} ${e.description ? '· ' + escapeHtml(e.description) : ''}</div>
+            container.innerHTML = expenses.slice(0, 30).map(e => {
+                // Employees only see summary, admin sees full details
+                const showFull = isAdmin;
+                return `
+                    <div class="task-item" style="border-left:3px solid var(--red);">
+                        <div class="task-info">
+                            <div class="task-name">${showFull ? escapeHtml(e.name || 'Matumizi') : 'Matumizi'}</div>
+                            <div class="task-meta">TSh ${(e.amount || 0).toLocaleString()} · ${e.date || ''} ${showFull && e.description ? '· ' + escapeHtml(e.description) : ''}</div>
+                            ${!showFull ? `<span class="badge badge-warning">🔒 Maelezo yamefichwa</span>` : ''}
+                        </div>
+                        ${showFull ? `<button class="btn btn-xs btn-danger" onclick="deleteExpense('${e.id}')">Futa</button>` : ''}
                     </div>
-                    ${currentUser && currentUser.role === 'admin' ? `<button class="btn btn-xs btn-danger" onclick="deleteExpense('${e.id}')">Futa</button>` : ''}
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
         const totalExpenses = expenses.reduce((sum, e) => sum + (e.amount || 0), 0);
         document.getElementById('expenseSummary').innerHTML = `
@@ -2614,7 +2736,7 @@
             `).join('');
         }
 
-        // Permissions
+        // Permissions - Admin only
         const permsContainer = document.getElementById('permissionsList');
         if (staff.length === 0) {
             permsContainer.innerHTML = '<div class="task-list-empty">Hakuna wafanyakazi wa kuwekea ruhusa.</div>';
@@ -2650,10 +2772,6 @@
         db.permissions[userId][type] = !db.permissions[userId][type];
         saveData();
         renderAdmin();
-        const perms = db.permissions[currentUser.id] || {};
-        document.getElementById('stockAddForm').style.display = perms.stock ? 'block' : 'none';
-        document.getElementById('salesAddForm').style.display = perms.sales ? 'block' : 'none';
-        document.getElementById('expensesAddForm').style.display = perms.expenses ? 'block' : 'none';
         showToast(`✅ Ruhusa ya ${type} imebadilishwa!`, 'ok');
     }
 
@@ -2745,6 +2863,7 @@
         const name = document.getElementById('taskNameInput').value.trim();
         const desc = document.getElementById('taskDescInput').value.trim();
         const date = document.getElementById('taskDateInput').value;
+        const reminderTime = document.getElementById('taskReminderTime').value;
         const priority = document.getElementById('taskPriorityInput').value;
         if (!name) { showToast('Andika jina la kazi', 'warn'); return; }
         const task = {
@@ -2753,9 +2872,11 @@
             name,
             description: desc || '',
             date: date || getTodayStr(),
+            reminder_time: reminderTime || '08:00',
             priority: priority || 'medium',
             done: false,
-            approved: false
+            approved: false,
+            reminder_sent: false
         };
         db.tasks.push(task);
         saveData();
@@ -2828,6 +2949,15 @@
         const age = parseInt(document.getElementById('patientAge').value) || 0;
         const gender = document.getElementById('patientGender').value;
         const notes = document.getElementById('patientNotes').value.trim();
+        const imageInput = document.getElementById('patientImage');
+        let image = '';
+        if (imageInput.files && imageInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) { image = e.target.result; };
+            reader.readAsDataURL(imageInput.files[0]);
+            await new Promise(r => setTimeout(r, 100));
+            image = image || '';
+        }
         if (!name) { showToast('Andika jina la mgonjwa', 'warn'); return; }
         const patient = {
             id: 'p' + Date.now() + Math.random().toString(36).substr(2, 4),
@@ -2836,6 +2966,7 @@
             address: address || '',
             age: age,
             gender: gender,
+            image: image || '',
             notes: notes || '',
             taken: false,
             date: getTodayStr()
@@ -2850,6 +2981,7 @@
         document.getElementById('patientAddress').value = '';
         document.getElementById('patientAge').value = '';
         document.getElementById('patientNotes').value = '';
+        document.getElementById('patientImage').value = '';
         renderPatients();
         showToast('✅ Mgonjwa amesajiliwa!', 'ok');
     }
@@ -2872,15 +3004,11 @@
     }
 
     // ============================================================
-    // STOCK OPERATIONS
+    // STOCK OPERATIONS - ADMIN ONLY
     // ============================================================
     async function adminUpdateStock() {
-        if (!currentUser) return;
-        const isAdmin = currentUser.id === ADMIN_ID;
-        const perms = db.permissions || {};
-        const userPerms = perms[currentUser.id] || {};
-        if (!isAdmin && !userPerms.stock) {
-            showToast('Huna ruhusa ya kuongeza stock!', 'warn');
+        if (!currentUser || currentUser.id !== ADMIN_ID) {
+            showToast('Admin pekee ndiye anaweza kuongeza stock!', 'warn');
             return;
         }
 
@@ -2931,17 +3059,10 @@
     }
 
     // ============================================================
-    // SALES OPERATIONS
+    // SALES OPERATIONS - ALL STAFF
     // ============================================================
     async function recordSale() {
         if (!currentUser) return;
-        const isAdmin = currentUser.id === ADMIN_ID;
-        const perms = db.permissions || {};
-        const userPerms = perms[currentUser.id] || {};
-        if (!isAdmin && !userPerms.sales) {
-            showToast('Huna ruhusa ya kurekodi mauzo!', 'warn');
-            return;
-        }
 
         const select = document.getElementById('saleDrugSelect');
         const drugId = select.value;
@@ -2988,15 +3109,11 @@
     }
 
     // ============================================================
-    // EXPENSE OPERATIONS
+    // EXPENSE OPERATIONS - ADMIN ONLY
     // ============================================================
     async function confirmAddExpense() {
-        if (!currentUser) return;
-        const isAdmin = currentUser.id === ADMIN_ID;
-        const perms = db.permissions || {};
-        const userPerms = perms[currentUser.id] || {};
-        if (!isAdmin && !userPerms.expenses) {
-            showToast('Huna ruhusa ya kuongeza matumizi!', 'warn');
+        if (!currentUser || currentUser.id !== ADMIN_ID) {
+            showToast('Admin pekee ndiye anaweza kuongeza matumizi!', 'warn');
             return;
         }
 
@@ -3026,6 +3143,10 @@
     }
 
     async function deleteExpense(expenseId) {
+        if (!currentUser || currentUser.id !== ADMIN_ID) {
+            showToast('Admin pekee ndiye anaweza kufuta matumizi!', 'warn');
+            return;
+        }
         if (!confirm('Futa matumizi haya?')) return;
         await supabase.deleteExpense(expenseId);
         db.expenses = db.expenses.filter(e => e.id !== expenseId);
@@ -3040,12 +3161,14 @@
         if (!currentUser) return;
         const title = document.getElementById('eventTitle').value.trim();
         const date = document.getElementById('eventDate').value;
+        const time = document.getElementById('eventTime').value;
         const desc = document.getElementById('eventDesc').value.trim();
         if (!title || !date) { showToast('Jaza maelezo yote', 'warn'); return; }
         const event = {
             id: 'ev' + Date.now() + Math.random().toString(36).substr(2, 4),
             title,
             date,
+            time: time || '09:00',
             description: desc || ''
         };
         if (!db.events) db.events = [];
@@ -3055,6 +3178,7 @@
         closeModal('newEventModal');
         document.getElementById('eventTitle').value = '';
         document.getElementById('eventDate').value = '';
+        document.getElementById('eventTime').value = '';
         document.getElementById('eventDesc').value = '';
         renderCalendar();
         showToast('✅ Tukio limeongezwa!', 'ok');
@@ -3543,6 +3667,12 @@
         const output = document.getElementById('reportOutput');
         if (!output) return;
 
+        const isAdmin = currentUser && currentUser.id === ADMIN_ID;
+        if (type === 'financial' && !isAdmin) {
+            showToast('Ripoti za kifedha zinaonekana na Admin pekee!', 'warn');
+            return;
+        }
+
         const today = getTodayStr();
         let data = [];
         let title = '';
@@ -3554,7 +3684,37 @@
             case 'attendance': data = db.attendance || []; title = '📊 Ripoti ya Mahudhurio'; break;
             case 'patients': data = db.patients || []; title = '📊 Ripoti ya Wagonjwa'; break;
             case 'tasks': data = db.tasks || []; title = '📊 Ripoti ya Majukumu'; break;
+            case 'financial':
+                data = { sales: db.sales || [], expenses: db.expenses || [] };
+                title = '📊 Ripoti ya Kifedha';
+                break;
             default: data = []; title = 'Ripoti';
+        }
+
+        if (type === 'financial') {
+            const totalSales = data.sales.reduce((sum, s) => sum + ((s.qty || 0) * (s.price || 0)), 0);
+            const totalExpenses = data.expenses.reduce((sum, e) => sum + (e.amount || 0), 0);
+            const profit = totalSales - totalExpenses;
+            output.innerHTML = `
+                <h4 style="color:var(--gold);margin-bottom:8px;">${title}</h4>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;">
+                    <div style="padding:12px;background:var(--panel-2);border-radius:8px;text-align:center;">
+                        <div style="font-size:11px;color:var(--text-dim);">Jumla ya Mauzo</div>
+                        <div style="font-size:20px;font-weight:700;color:var(--green);">TSh ${totalSales.toLocaleString()}</div>
+                    </div>
+                    <div style="padding:12px;background:var(--panel-2);border-radius:8px;text-align:center;">
+                        <div style="font-size:11px;color:var(--text-dim);">Jumla ya Matumizi</div>
+                        <div style="font-size:20px;font-weight:700;color:var(--red);">TSh ${totalExpenses.toLocaleString()}</div>
+                    </div>
+                    <div style="padding:12px;background:var(--panel-2);border-radius:8px;text-align:center;">
+                        <div style="font-size:11px;color:var(--text-dim);">Faida</div>
+                        <div style="font-size:20px;font-weight:700;color:${profit >= 0 ? 'var(--green)' : 'var(--red)'};">TSh ${profit.toLocaleString()}</div>
+                    </div>
+                </div>
+                <div style="font-size:11px;color:var(--text-faint);">Tarehe: ${new Date().toLocaleString('sw-TZ')}</div>
+            `;
+            showToast('✅ Ripoti ya Kifedha imetengenezwa!', 'ok');
+            return;
         }
 
         if (data.length === 0) {
@@ -3583,7 +3743,7 @@
             data.slice(0, 20).forEach((item, i) => {
                 html += `<tr>
                     <td>${i+1}</td>
-                    <td>${escapeHtml(item.name)}</td>
+                    <td>${isAdmin ? escapeHtml(item.name) : '***'}</td>
                     <td>TSh ${(item.amount || 0).toLocaleString()}</td>
                     <td>${item.date || ''}</td>
                 </tr>`;
@@ -3766,13 +3926,14 @@
 
         if (navigator.onLine) setTimeout(syncData, 3000);
 
-        console.log('✅ Dr. William v19 imeanza!');
+        console.log('✅ Dr. William v20 imeanza!');
         console.log('👑 Admin: 1616 / PIN: 1616');
         console.log('📱 Inafanya kazi kwa simu na kompyuta');
         console.log('☁️ Supabase Cloud imewashwa');
         console.log('🤖 Mistral AI imewashwa');
-        console.log('📸 Picha za bidhaa zinaweza kupigwa kwa camera');
-        console.log('💰 Mshahara wa Admin unaweza kubadilishwa');
+        console.log('🔔 Persistent Reminders imewashwa');
+        console.log('🔐 RBAC imewashwa');
+        console.log('📸 Picha za bidhaa na wagonjwa zinaweza kupigwa');
     }
 
     document.addEventListener('DOMContentLoaded', init);
